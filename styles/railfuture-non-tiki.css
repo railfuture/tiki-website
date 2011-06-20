@@ -1,0 +1,204 @@
+/* 
+// -----------------------------------------------------------------------------
+// File:        railfuture-non-tiki.css
+// Title:       Railfuture Non-Tiki Style Sheet - used for Ox-Cam etc.
+// Description: This is the Cascading Style Sheet (CSS) for the Ox-Cam part of
+//              the Railfuture web-site.
+// Author:      Jerry Alderson, Billing Specialists Ltd.
+// Copyright:   Billing Specialists Ltd. 2009.
+// -----------------------------------------------------------------------------
+*/
+
+body {
+/* The following works on readfile.php becuas eit has a body and no divisons:
+  background-image: url( '../styles/railfuture/titlebar.png' );
+*/
+  background-color: #C0C0C0;  /* Light Grey */
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+}
+
+/* Divisions = Each is the name (id) of the division */
+
+#wrapper {
+  background-color: #FFFFFF;  /* White */
+}
+
+#inner-wrapper {
+  min-height: 90%;
+  height: auto !important;
+  height: 90%;
+  margin: 0 auto 0;
+}
+
+#header {
+  width: 100%;
+  height: auto;
+  margin: 0px auto;
+}
+
+#menubar  {
+  width: 100px;
+  top-margin: 10px;
+  margin: 0px auto;
+  background-color: gray;
+  padding: 7px 7px;
+}
+
+#menubar TD.menubar:hover {
+  font-style: bold; 
+  border-color: blue;
+  color: #C0FFC0;
+  background-color: lightslategray;
+  text-decoration: none;
+}
+
+#main-content {
+  width: auto;
+  height: auto;
+}
+
+#main-frontpage {
+  background-image: url( 'Ox-Cam/gallery/Railfuture-Ox-Cam-gallery-B-014-v1_DB.jpg' );
+  background-position: top;
+}
+
+#footer {
+}
+
+/* Styles - The following operate across all divisions */
+
+.cambridge {
+  color: #0099FF;
+}
+
+.arc {
+  color: #FF9933;
+}
+
+.oxford {
+  color: #000099;
+}
+
+td.heading {
+  background-color: #CCFFCC;  /* Blue (Pale) */
+  text-align: center;
+}
+
+td.inputfield {
+  background-color: #C0C0C0;  /* Grey (Light) */
+}
+
+td.inputlabel {
+  text-align: right;
+  font-style: bold; 
+}
+
+td.inputrule {
+  text-align: left;
+  font-style: bold; 
+}
+
+td.menubar {
+  background-color: #FF8811;  /* Orange (Darker) */
+  border-style: solid;
+  border-width: thin;
+  border-color: white;
+  font-family: verdana;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+td.menubarcurrent {
+  background-color: #C0C0C0;  /* Grey (Light) */
+  border-style: solid;
+  border-width: thin;
+  border-color: white;
+  font-family: verdana;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+td.menubreak {
+  font-family: verdana;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+td.sectionbar {
+  background-color: #FFFF00;  /* Yellow */
+  text-align: center;
+  font-family: impact;
+  font-size: 1.5em;
+}
+
+td.subtitle {
+  text-align: left;
+  font-family: verdana;
+  font-size: 1.0em;
+}
+
+tr.normal {
+  font-family: verdana;
+  font-size: 0.8em;
+}
+
+tr.gallery {
+  font-family: verdana;
+  font-size: 0.8em;
+  text-align: center;
+  vertical-align: top;
+}
+
+td.normal {
+  font-family: verdana;
+  font-size: 0.8em;
+}
+
+td.strongcentredtext {
+  font-family: verdana;
+  font-size: 1.0em;
+  text-align: center;
+}
+
+td.centredtext {
+  font-family: verdana;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+td.railwayherald {
+  background-color: #880000;  /* Red (Dark) */
+  font-family: verdana;
+  font-size: 0.9em;
+  margin: 5px 5px;
+  text-align: center;
+}
+
+td.bullet {
+  vertical-align: top
+}
+
+td.footer {
+  text-align: center;
+  font-family: verdana;
+  font-size: 0.6em;
+}
+
+a img {
+  border: 0;
+} 
+
+.activeField
+{
+    background-color: #C0C0C0;
+    border: solid 1px #33677F;
+}
+.idle
+{
+    border: solid 1px #85b1de;
+}
+
+/* End. */
