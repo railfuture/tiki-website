@@ -6,3 +6,4 @@
 /db/local.php
 /temp/
 /backups/
+/db/lock
