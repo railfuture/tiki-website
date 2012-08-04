@@ -14,6 +14,11 @@
 /* And design defaults: */
 @import url("layout/design.css");
 
+/* ... overriding this specific style from design.css */
+#sitelogo img {
+	margin-top: 0px;
+}
+
 /***** XHTML Elements ******/
 body {
 	background: white;
