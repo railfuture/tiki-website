@@ -19,6 +19,12 @@
 	margin-top: 0px;
 }
 
+/* and this one */
+
+#topbar_modules {
+	min-height: 0px;
+}
+
 /***** XHTML Elements ******/
 body {
 	background: white;
@@ -230,8 +236,6 @@ body.fixed_width .fixedwidth .fixedwidth {
 #top_modules #sitetitles {
 	margin-left: 20px;
 	line-height: normal;
-	margin-top: 10%;
-	margin-bottom: 10%;
 	padding-left: 15px;
 }
 
