@@ -488,7 +488,7 @@ a.flip:hover {
 .cssmenu_vert a {
 	text-decoration: none;
 	display: block;
-	padding: 5px 6px;
+	font-style: italic;
 }
 
 .cssmenu_horiz a:hover,
