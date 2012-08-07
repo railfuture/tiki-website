@@ -26,6 +26,9 @@
 	margin: 0px;
 }
 
+table.formcolor {
+	width: 100%;
+}
 /* and this one */
 
 #topbar_modules {
