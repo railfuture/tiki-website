@@ -1,6 +1,6 @@
 *~
 *#
-/error_log*
+error_log*
 /templates_c/
 /modules/cache/*
 /db/local.php
