@@ -14,9 +14,15 @@
 /* And design defaults: */
 @import url("layout/design.css");
 
-/* ... overriding this specific style from design.css */
+/* ... overriding these specific styles from design.css / layout.css */
 #sitelogo img {
 	margin-top: 0px;
+}
+
+#sitelogo.floatleft {
+	float: none;
+	clear: none;
+	margin: 0px;
 }
 
 /* and this one */
@@ -227,11 +233,6 @@ body.fixed_width .fixedwidth .fixedwidth {
 }
 
 /* #Header */
-
-#top_modules .box-logo {
-	float: left;
-	margin: 10px;
-}
 
 #top_modules #sitetitles {
 	margin-left: 20px;
