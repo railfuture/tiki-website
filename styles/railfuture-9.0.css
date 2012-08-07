@@ -16,7 +16,8 @@
 
 /* ... overriding these specific styles from design.css / layout.css */
 #sitelogo img {
-	margin-top: 0px;
+	margin: 0px auto;
+	display: block;
 }
 
 #sitelogo.floatleft {
