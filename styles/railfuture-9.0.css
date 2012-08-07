@@ -381,8 +381,8 @@ a.flip:hover {
 }
 
 #c1c2 #col2 .content {
-	border: 1px solid #aaa;
 	margin-left: 9px;
+	font-size: 1.13em;
 }
 
 #col3 {
@@ -394,8 +394,6 @@ a.flip:hover {
 
 #col3 .content {
 	margin: 0;
-	padding-right: 9px;
-	border: 1px solid #aaa;
 	margin-right: 9px;
 	font-size: 1.13em;
 }
