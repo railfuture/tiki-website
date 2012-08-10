@@ -7,3 +7,4 @@ error_log*
 /temp/
 /backups/
 /db/lock
+/non-tiki/
