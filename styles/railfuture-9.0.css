@@ -26,6 +26,18 @@
 	margin: 0px;
 }
 
+.module a,
+.module a:visited,
+.module a:link {
+	color: #525252;
+}
+.module a:hover {
+	color: #008014;
+	text-decoration: none;
+}
+.module {
+	color: #525252;
+}
 table.formcolor {
 	width: 100%;
 }
@@ -39,7 +51,7 @@ table.formcolor {
 body {
 	background: white;
 	color: #000;
-	font: 72% Georgia, serif;
+	font: "Gill Sans MT","Gill Sans",Arial,Sans-serif;
 	text-align: center;
 }
 
@@ -50,7 +62,7 @@ html>body {
 
 a, a:link,
 a:visited {
-	color: #005faa;
+	color: #008014;
 	text-decoration: none;
 }
 
@@ -88,8 +100,8 @@ h5 {
 }
 
 hr {
-	background: #aaa;
-	color: #aaa;
+	background: #02A132;
+	color: #02A132;
 }
 
 legend {
@@ -126,11 +138,17 @@ input[type="reset"],
 input[type="submit"],
 .button input,
 .calbuttonBox a {
-	border: solid 1px #aaa;
+	border: solid 1px #02A132;
+	behavior: url(/styles/railfuture-9.0/PIE.htc); /* for IE */
+	-moz-border-radius: 16px;
+	-webkit-border-radius: 16px;
+	-khtml-border-radius: 16px; /* for old Konqueror browsers */
+	border-radius: 16px;
+	margin: 1px;
 	background: #fbfbfb;
 	color: #000;
-	text-transform: uppercase;
-	font: .8em Arial, Helvetica, sans-serif;
+	font-size: .8em;
+	font-style: italic;
 }
 
 
@@ -143,8 +161,9 @@ input[type="submit"]:hover,
 .calbuttonBox:hover {
 	cursor: pointer;
 	background: #e6e6f8;
-	font: .8em Arial, Helvetica, sans-serif;
+	font-size: .8em;
 	text-decoration: none;
+	margin: 1px;
 }
 
 /* Needed for Opera (11) */
@@ -315,7 +334,7 @@ body.fixed_width .fixedwidth .fixedwidth {
 }
 /*
 #tiki-columns {
-	border-top: 1px solid #aaa;
+	border-top: 1px solid #02A132;
 	padding: 2px 2px 0 2px;
 }*/
 
@@ -357,10 +376,17 @@ a.flip:hover {
 
 /* Also is .content */
 #tiki-center {
-	border: 1px solid #aaa;
+	border-left: 2px solid #02A132;
+	border-top: 2px solid #02A132;
+	behavior: url(/styles/railfuture-9.0/PIE.htc); /* for IE */
+	-moz-border-radius: 16px;
+	-webkit-border-radius: 16px;
+ 	-khtml-border-radius: 16px; /* for old Konqueror browsers */
+ 	border-radius: 16px 0 0 0;
 	margin-left: -1px;
 	margin-right: -1px;
 	padding: .8em;
+	min-height: 300px; /* don't shrink too small - there's a funny layout model in use */
 }
 
 /* give every div in #tiki-center some padding */
@@ -390,6 +416,7 @@ a.flip:hover {
 }
 
 #col3 {
+	border-top: 2px solid #02A132;
 	margin-left: -214px;
 	width: 214px;
 	text-align: left;
@@ -494,21 +521,20 @@ a.flip:hover {
 
 .cssmenu_horiz a:hover,
 .cssmenu_vert a:hover {
-	text-decoration: underline;
 }
 
 #tiki-top > .cssmenu_horiz {
-	border-left: 1px solid #aaa;
+	border-left: 1px solid #02A132;
 }
 
 #tiki-top .cssmenu_horiz {
 	float: left;
 	margin-left: 11px;
-	font: .9em Verdana, Helvetica, Arial, Sans-Serif;
+	font-size: .9em;
 }
 
 #tiki-top > .cssmenu_horiz > li > a {
-	border-right: 1px solid #aaa;
+	border-right: 1px solid #02A132;
 	padding: 8px 1em;
 }
 
@@ -587,16 +613,15 @@ a.flip:hover {
 }
 
 h3.box-title {
-	margin: 0 0 7px 1em;
 	padding: 0;
-	height: 18px;
 	color: black;
-	text-transform: uppercase;
-	font: normal 90% Arial, Helvetica, sans-serif;
+	margin: 0.2em 0;
 }
 
 .moduletitle {
+	font-size: 15px;
 	font-weight: bold;
+	font-style: italic;
 }
 
 .box:hover img.flipmodimage {
@@ -606,7 +631,7 @@ h3.box-title {
 }
 	
 img.flipmodimage:hover {
-	border: 1px solid #aaa !important;
+	border: 1px solid #02A132 !important;
 }
 
 .box-data {
@@ -626,7 +651,6 @@ img.flipmodimage:hover {
 }
 
 .box-data ul li {
-	list-style: square;
 }
 
 .cssmenu li,
@@ -645,18 +669,18 @@ img.flipmodimage:hover {
 
 .box-since_last_visit_new a.linkmodule b {
 	text-transform: uppercase;
-	font: 85% Arial, Helvetica, sans-serif;
+	font-size: 85%;
 }
 
 /** Other boxes **/
 .cbox {
 	background: #ebebeb;
 	margin-bottom: 4px;
-	border: 1px solid #aaa;
+	border: 1px solid #02A132;
 }
 
 .cbox-title {
-	border-bottom: 1px solid #aaa;
+	border-bottom: 1px solid #02A132;
 	padding: 3px;
 	margin: 0 0 7px 0;
 	padding: 0;
@@ -664,7 +688,7 @@ img.flipmodimage:hover {
 	text-transform: uppercase;
 	font-weight: bold;
 	text-indent: 1em;
-	font: normal 75% Arial, Helvetica, sans-serif;
+	font: normal 75%;
 }
 
 .cbox-data {
@@ -682,16 +706,17 @@ img.flipmodimage:hover {
 	padding: 0.2em 0.8em;
 	line-height: 1.4em;
 	background: #f2cd5e;
+	border: 1px solid #02A132;
 }
 
 .rbox-data {
-	border: solid 1px #f2cd5e;
 	padding: 6px 2px 2px 2px;
 	background: #fff;
+	border: 1px solid #02A132;
 }
 
 .simplebox {
-	border: 1px solid #aaa;
+	border: 1px solid #02A132;
 	background: #fff;
 	padding: 1em;
 }
@@ -771,7 +796,7 @@ tr.diffheader {
 }
 
 .tabs {
-	border-bottom: solid 1px #0a6aa6 !important;
+	border-bottom: solid 1px #02A132 !important;
 	margin-top: 10px !important;
 	padding: 0 !important;
 }
@@ -782,7 +807,7 @@ tr.diffheader {
 
 .tabmark {
 	font-size: 10px;
-	padding: 2px 0;
+	padding: 2px 2px 3px 0;
 	background: #bfbfbf;
 }
 
@@ -792,38 +817,39 @@ tr.diffheader {
 }
 
 .tabmark a:active {
-	color: #0a6aa6;
-	background: #f2f2f2;
+	color: #02A132;
+	background: #F0F0F0;
 }
 
 .tabmark a:hover {
-	color: #0a6aa6;
+	color: #02A132;
 	text-decoration: none;
 	background: #cfcfcf;
 }
 
 /* active (current) tab */
 .tabactive {
-	border: solid 1px #0a6aa6 !important;
+	border: solid 1px #02A132 !important;
 	border-bottom: 0 !important;
-	border-top-width: 2px !important;
+	border-top-width: 1px !important;
 	bottom: 2px;
 	z-index: 2;
-	background: #f2f2f2 !important;
+	background: #F0F0F0 !important;
 }
 
 [class].tabactive {
 	bottom: 0;
-	top: 2px;
+	top: 1px;
+	padding-bottom: 3px;
 }
 
 .tabactive a:hover {
-	background: #f2f2f2 !important;
+	background: #F0F0F0 !important;
 }
 
 /* link of active tab */
 .tabactive a {
-	color: #0a6aa6 !important;
+	color: #02A132 !important;
 }
 
 /* inactive tabs */
@@ -834,12 +860,12 @@ tr.diffheader {
 }
 
 .tabcontent {
-	border: solid 1px #0a6aa6 !important;
+	border: solid 1px #02A132 !important;
 	border-top: none !important;
 	margin: 0;
 	padding: 6px 2px 2px 2px;
 	text-align: center;
-	background: #f2f2f2;
+	background: #F0F0F0;
 }
 
 .tabcontent table {
@@ -893,7 +919,7 @@ h1 a.pagetitle {
 
 .wikitext .fancylist li {
 	color: #999;
-	font: italic 2.2em Georgia, "Times New Roman", sans-serif;
+	font: italic 2.2em;
 	list-style-position: outside;
 }
 
@@ -982,7 +1008,7 @@ textarea.wikiedit {
 }
 
 #tiki-center .versioncontent {
-	border: 1px solid #aaa;
+	border: 1px solid #02A132;
 	background: #fff;
 }
 
@@ -1028,7 +1054,7 @@ textarea.wikiedit {
 
 .articletopline {
 	color: #000;
-	font: 90% arial,helvetica,sans-serif;
+	font-size: 90%;
 	text-transform: uppercase;
 }
 
@@ -1615,12 +1641,12 @@ div.dirfooter {
 
 /** Admin pages **/
 .adminanchors {
-	background: #f0f4f5 !important;
-	border: 1px solid #999;
+	background: #F0F0F0 !important;
+	border: 1px solid #02A132;
 }
 
 a.admbox {
-	border: 1px solid #aaa;
+	border: 1px solid #02A132;
 	color: white;
 	background-color: #6c6c6c;
 }
@@ -1644,7 +1670,7 @@ a.admbox.off:active {
 }
 
 body.tiki_mytiki #tiki-center form {
-	border: 1px solid #aaa;
+	border: 1px solid #02A132;
 	padding: 10px;
 }
 
@@ -1658,7 +1684,7 @@ body.fixed_width #main {
 }
 
 body.fixed_width #main[id] {
-	border: 1px solid #aaa;
+	border: 1px solid #02A132;
 }
 
 /* end of css file */
