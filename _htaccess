@@ -118,6 +118,18 @@ RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 RewriteRule	.*/\.svn/.*	-	[F,L]
 RewriteRule     .*/\.git/.*     -       [F,L]
 
+# Rewriting for non-tiki Railfuture pages.
+#
+# Redirect URLs with a missing trailing slash to include one.
+RewriteRule ^(ox-cam|campaigns|lottery|conferences|east|herald|mr|win|books|branches|join)$ $1/ [R=301,NC,L]
+# Redirect uppper-case forms to lower case ones.  We have to do them individually,
+# since I can't get RewriteMap lc int:tolower to work.
+RewriteRule ^Ox-Cam/(.*) ox-cam/$1 [R=301,L]
+RewriteRule ^Herald/(.*) herald/$1 [R=301,L]
+# Now rewrite all non-tiki pages to the right location.
+RewriteRule ^(ox-cam|campaigns|lottery|conferences|east|herald|mr|win|books|branches|join)\/(.*) non-tiki/$1/$2 [L]
+RewriteRule ^(branch_meetings|east|rail_east|east_midlands)\.html$  non-tiki/$1.html [NC,L]
+
 # If the URL points to a file then do nothing
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
