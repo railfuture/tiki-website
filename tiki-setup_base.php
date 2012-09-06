@@ -11,6 +11,7 @@ if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
 	exit;
 }
 require_once ('tiki-filter-base.php');
+require_once ('fasthosts-memory-limit.php');
 // ---------------------------------------------------------------------
 // basic php conf adjustment
 // xhtml compliance
