@@ -8,3 +8,4 @@ error_log*
 /backups/
 /db/lock
 /non-tiki/
+/file_gallery/
