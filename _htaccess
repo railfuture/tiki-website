@@ -1,4 +1,4 @@
-# $Id: _htaccess 42078 2012-06-25 10:49:20Z yonixxx $ [This line is used to check that this configuration file is up to date. Do not edit this line and leave it as the first line.]
+# $Id: _htaccess 42458 2012-07-23 17:26:32Z Jyhem $ [This line is used to check that this configuration file is up to date. Do not edit this line and leave it as the first line.]
 # These are suggested configuration directives for use with Tiki.
 # They enhance security and permit clean URLs.
 # In your Tiki instance, visit tiki-admin.php?page=sefurl to make Tiki use clean URLs in generated links.
@@ -28,12 +28,14 @@
 
 # This prevents reading of files with certain extensions.
 <FilesMatch "\.(bak|inc|lib|sh|tpl|sql)$">
-###	order deny,allow
-###	deny from all
+	order deny,allow
+	deny from all
 </FilesMatch>
 
 <IfModule mod_dir.c>
 ###	DirectoryIndex index.php
+	# if using wiki as homepage feature you may avoid the home page name being appended to the url by replacing the previous line with the following line
+	#DirectoryIndex tiki-index.php index.php
 </IfModule>
 
 <IfModule deflate_module>
@@ -112,7 +114,7 @@ RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 #RewriteBase   /tiki
 # And if you get errors like "The requested URL /absolutepath/tiki-index.php was not found on this server",
 # You may need to uncomment the following line.
-RewriteBase   /
+# RewriteBase   /
 
 #If your website is a checkout
 RewriteRule	.*/\.svn/.*	-	[F,L]
