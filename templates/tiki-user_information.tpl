@@ -1,8 +1,10 @@
-{* $Id: tiki-user_information.tpl 35180 2011-07-02 11:53:56Z gta74 $ *}
+{* $Id: tiki-user_information.tpl 42760 2012-08-26 00:26:36Z Jyhem $ *}
 {capture assign="viewuser"}{$userwatch|escape:"url"}{/capture}
 {title url="tiki-user_information.php?view_user=$viewuser"}{tr}User Information{/tr}{/title}
 
-{include file='tiki-mytiki_bar.tpl'}
+{if "$userwatch" eq "$user" }
+	{include file='tiki-mytiki_bar.tpl'}
+{/if}
 
 {if $prefs.feature_tabs neq 'y' and $user and $prefs.feature_messages eq 'y' and $tiki_p_messages eq 'y' and $allowMsgs eq 'y'}
 <div class="navbar">

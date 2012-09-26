@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-editpage.php 41460 2012-05-14 21:21:32Z nkoth $
+// $Id: tiki-editpage.php 42262 2012-07-08 01:15:58Z Jyhem $
 
 // If you put some traces in this script, and can't see them
 // because the script automatically forwards to another URL
@@ -158,6 +158,7 @@ if ($tiki_p_edit !== 'y') {
 // Anti-bot feature: if enabled, anon user must type in a code displayed in an image
 if (isset($_REQUEST['save']) && (!$user || $user === 'anonymous') && $prefs['feature_antibot'] === 'y') {
 	if (!$captchalib->validate()) {
+		$smarty->assign('errortype', 'no_redirect_login');
 		$smarty->assign('msg', $captchalib->getErrors());
 		$smarty->display("error.tpl");
 		die;

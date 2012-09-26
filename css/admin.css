@@ -1,4 +1,4 @@
-/* $Id: admin.css 40377 2012-03-25 17:27:05Z jonnybradley $ */
+/* $Id: admin.css 42603 2012-08-17 14:58:39Z chibaguy $ */
 
 a.admbox,
 a.admbox:visited {
@@ -88,6 +88,11 @@ a.admbox.off img {
 
 .adminoptionbox label.above {
 	display: block;
+}
+
+.adminoptionbox > label {
+	min-width: 12em;
+	display: inline-block;
 }
 
 .adminoptionbox .checkbox, .adminoption {
@@ -354,7 +359,7 @@ a.admbox.off img {
 	display: none;
 }
 
-.modules {
+.ui-droppable.modules {
 	min-height: 1em;
 }
 
@@ -451,14 +456,14 @@ a.admbox.off img {
 
 /* profiles */
 
-#prefs_to_export_list {
+.profile_export_list {
 	height: 30em;
 	overflow: auto;
 	list-style: none;
 	padding: 0;
 }
 
-#prefs_to_export_list li {
+.profile_export_list li {
 	padding: 0.4em 2em;
 }
 #export_to_yaml label {

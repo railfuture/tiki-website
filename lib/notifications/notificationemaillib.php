@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: notificationemaillib.php 39722 2012-02-01 17:33:40Z sampaioprimo $
+// $Id: notificationemaillib.php 42635 2012-08-21 17:13:29Z amette $
 
 /** \brief send the email notifications dealing with the forum changes to
  * \brief outbound address + admin notification addresses / forum admin email + watching users addresses
@@ -67,6 +67,7 @@ function sendForumEmailNotification(
 		$mail->setText($mail_data);
 		$mail->setHeader("Reply-To", $my_sender);
 		$mail->setHeader("From", $my_sender);
+		$mail->setHeader("X-Tiki", 'yes');
 		$mail->setSubject($topicName);
 
 		if ($inReplyTo) {

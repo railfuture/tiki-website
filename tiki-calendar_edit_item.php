@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-calendar_edit_item.php 41464 2012-05-15 14:18:50Z robertplummer $
+// $Id: tiki-calendar_edit_item.php 42311 2012-07-09 19:49:02Z jonnybradley $
 
 $section = 'calendar';
 require_once ('tiki-setup.php');
@@ -16,7 +16,7 @@ include_once ('lib/calendar/calrecurrence.php');
 if ($prefs['feature_groupalert'] == 'y') {
 	include_once ('lib/groupalert/groupalertlib.php');
 }
-$auto_query_args = array('calitemId');
+$auto_query_args = array('calitemId', 'viewcalitemId');
 
 $daysnames = array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
 $daysnames_abr = array("Su","Mo","Tu","We","Th","Fr","Sa");
@@ -570,6 +570,12 @@ $smarty->assign('calitem', $calitem);
 $smarty->assign('calendar', $calendar);
 $smarty->assign('calendarId', $calID);
 $smarty->assign('preview', isset($_REQUEST['preview']));
+if ($calitem['allday']) {
+	$smarty->assign('hidden_if_all_day', ' style="display:none;"');
+} else {
+	$smarty->assign('hidden_if_all_day', '');
+}
+
 if (array_key_exists('CalendarViewGroups', $_SESSION) && count($_SESSION['CalendarViewGroups']) == 1)
 	$smarty->assign('calendarView', $_SESSION['CalendarViewGroups'][0]);
 

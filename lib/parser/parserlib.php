@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: parserlib.php 42109 2012-06-26 19:08:14Z robertplummer $
+// $Id: parserlib.php 42165 2012-06-29 09:51:00Z changi67 $
 
 /**
  * Parser Library
@@ -2700,7 +2700,7 @@ if ( \$('#$id') ) {
 							}
 						}
 
-						$maketoc = $this->parse_data($maketoc, array('noparseplugins' => true, 'is_html' => true));
+						$maketoc = $this->parse_data($maketoc, array('noparseplugins' => true));
 
 						if (preg_match("/^<ul>/", $maketoc)) {
 							$maketoc = preg_replace("/^<ul>/", '<ul class="toc">', $maketoc);

@@ -1,4 +1,4 @@
-{* $Id: comment-header.tpl 42091 2012-06-26 10:49:46Z Jyhem $ *}
+{* $Id: comment-header.tpl 42250 2012-07-07 10:24:34Z chibaguy $ *}
 <div class="clearfix postbody-title">
 	{if $prefs.feature_comments_locking neq 'y' or
 		( $comment.locked neq 'y' and $thread_is_locked neq 'y' )}
@@ -80,5 +80,4 @@
 	{if $thread_style eq 'commentStyle_headers'}
 		{include file='comment-footer.tpl'  comment=$comments_coms[rep]}
 	{/if}
-	<br class="clear" />
 </div>

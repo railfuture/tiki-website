@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: Lucene.php 41555 2012-05-24 17:38:28Z jonnybradley $
+// $Id: Lucene.php 42154 2012-06-28 15:39:14Z jonnybradley $
 
 class Search_Index_Lucene implements Search_Index_Interface
 {

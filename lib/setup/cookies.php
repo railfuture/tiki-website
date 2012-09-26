@@ -3,23 +3,23 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: cookies.php 40057 2012-03-06 21:51:17Z pkdille $
+// $Id: cookies.php 42325 2012-07-10 12:04:47Z jonnybradley $
 
 //this script may only be included - so its better to die if called directly.
 $access->check_script($_SERVER['SCRIPT_NAME'], basename(__FILE__));
 
-$headerlib->add_js('var tiki_cookie_jar=new Array();');
-
 if ( isset($_SESSION['tiki_cookie_jar']) ) {
 	$cookielist = array();
 
-	$smarty->loadPlugin('smarty_modifier_escape');
-	foreach ( $_SESSION['tiki_cookie_jar'] as $nn => $vv ) {
-		$cookielist[] = "'" . smarty_modifier_escape($nn, 'javascript') . "': '" . smarty_modifier_escape($vv, 'javascript') . "'";
+	if (is_array($_SESSION['tiki_cookie_jar'])) {
+		$smarty->loadPlugin('smarty_modifier_escape');
+		foreach ( $_SESSION['tiki_cookie_jar'] as $nn => $vv ) {
+			$cookielist[] = "'" . smarty_modifier_escape($nn, 'javascript') . "': '" . smarty_modifier_escape($vv, 'javascript') . "'";
+		}
 	}
 
 	if ( count($cookielist) ) {		
-		$headerlib->add_js("tiki_cookie_jar={\n". implode(",\n\t", $cookielist)."\n};", 80);
+		$headerlib->add_js('tiki_cookie_jar={'. implode(',', $cookielist).'};');
 	}
 }
 
@@ -65,9 +65,9 @@ function setCookieSection($name, $value, $section = '', $expire = null, $path = 
 		$name2 = '@' . $name . ':';
 		if ($valSection) {
 			if (preg_match('/' . preg_quote($name2) . '/', $valSection)) {
-				$valSection  = preg_replace('/' . preg_quote($name2) . '[^@;]*/', $name2 + $value, $valSection);
+				$valSection  = preg_replace('/' . preg_quote($name2) . '[^@;]*/', $name2 . $value, $valSection);
 			} else {
-				$valSection = $valSection + $name2 + $value;
+				$valSection = $valSection . $name2 . $value;
 			}
 			setCookieSection($section, $valSection, '', $expire, $path, $domain, $secure);
 		} else {

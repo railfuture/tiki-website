@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: wikiplugin_customsearch.php 41669 2012-05-31 16:34:53Z nkoth $
+// $Id: wikiplugin_customsearch.php 42384 2012-07-16 03:13:47Z nkoth $
 
 function wikiplugin_customsearch_info()
 {
@@ -483,6 +483,7 @@ customsearch_quiet_$id = false;
 				$label = '';
 			}
 			$option = $document->createElement('option', $label);
+			$option->setAttribute('value', '');
 			$element->appendChild($option);
 		} 
 		$script .= "$('#$fieldid').change(function() {"; 
@@ -547,6 +548,7 @@ function cs_design_select($id, $fieldname, $fieldid, $arguments, $default, &$scr
 			$label = '';
 		}
 		$option = $document->createElement('option', $label);
+		$option->setAttribute('value', '');
 		$element->appendChild($option);
 	}
 

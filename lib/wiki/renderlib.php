@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: renderlib.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: renderlib.php 42257 2012-07-07 15:55:37Z jonnybradley $
 
 class WikiRenderer
 {
@@ -117,7 +117,7 @@ class WikiRenderer
 		if ( ! $this->structureInfo )
 			return;
 
-		global $structlib, $tikilib;
+		global $structlib, $tikilib, $structure, $structure_path;
 
 		$structure = 'y';
 		$this->smartyassign('structure', $structure);

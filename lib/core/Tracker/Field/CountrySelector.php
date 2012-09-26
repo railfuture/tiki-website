@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: CountrySelector.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: CountrySelector.php 42292 2012-07-09 14:10:09Z Jyhem $
 
 /**
  * Handler class for CountrySelector
@@ -79,7 +79,7 @@ class Tracker_Field_CountrySelector extends Tracker_Field_Abstract implements Tr
 				$out .= '<img src="img/flags/'.$current.'.gif" title="'.$label.'" alt="'.$label.'" />';
 			}
 			if ($this->getOption(0) == 0) {
-				$out .= '&nbsp;';
+				$out .= ' ';
 			}
 		}
 		if ($this->getOption(0) != 2) {

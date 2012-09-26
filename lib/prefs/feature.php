@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: feature.php 42077 2012-06-25 07:30:32Z marclaporte $
+// $Id: feature.php 42696 2012-08-23 13:49:57Z marclaporte $
 
 function prefs_feature_list($partial = false)
 {
@@ -830,6 +830,11 @@ function prefs_feature_list($partial = false)
 			'help' => 'Task',
 			'type' => 'flag',
 			'default' => 'n',
+			'module' => 'task',
+			'view' => 'tiki-user_tasks.php',
+			'permission' => array(
+				'textFilter' => 'task',
+			),
 		),
 		'feature_messages' => array(
 			'name' => tra('User Messages'),
@@ -1032,6 +1037,18 @@ function prefs_feature_list($partial = false)
 			),
 			'tags' => array('experimental'),			
 		),
+		'feature_draw_hide_buttons' => array(
+			'name' => tra('Draw (SVG-edit) Hide Buttons'),
+			'description' => tra('Hide buttons found in Tiki Draw, HTML id, comma-delimited.  Example: "tool_select,tool_fhpath,tools_line_show,tools_rect_show,tools_ellipse_show,tool_path,tools_shapelib_show,tool_text,tool_image,tool_zoom,tool_eyedropper"'),
+			'help' => 'Draw',
+			'dependencies' => array(
+				'feature_draw',
+				'feature_file_galleries',
+			),
+			'tags' => array('experimental'),
+			'type' => 'textarea',
+			'default' => '',
+		),
 		'feature_docs' => array(
 			'name' => tra('Docs (WebODF)'),
 			'description' => tra('Docs gives you the ability to view/edit Open Document Format'),
@@ -1215,6 +1232,11 @@ function prefs_feature_list($partial = false)
 			'type' => 'flag',
 			'perspective' => false,
 			'default' => 'n',
+			'module' => 'perspective',
+			'plugin' => 'perspective',
+			'permission' => array(
+				'textFilter' => 'perspective',
+			),
 			'view' => 'tiki-edit_perspective.php',
 		),
 		'feature_wiki_replace' => array(
@@ -1361,7 +1383,6 @@ function prefs_feature_list($partial = false)
 			'name' => tra('Object filter'),
 			'type' => 'flag',
 			'default' => 'n',
-			'dbfeatures' => array('mysql_fulltext'),
 		),
 		'feature_search_show_search_box' => array(
 			'name' => tra('Search box'),
@@ -1387,7 +1408,7 @@ function prefs_feature_list($partial = false)
 		'feature_search_show_last_modification' => array(
 			'name' => tra('Last modified date'),
 			'type' => 'flag',
-			'default' => 'y',
+			'default' => 'n',
 			'tags' => array('basic'),
 		),
 		'feature_blog_rankings' => array(
@@ -1509,13 +1530,13 @@ function prefs_feature_list($partial = false)
 			'name' => tra('Forum name search'),
 			'type' => 'flag',
 			'hint' => tra('When listing forums'),
-			'default' => 'y',
+			'default' => 'n',
 		),
 		'feature_forums_search' => array(
 			'name' => tra('Forum content search'),
 			'type' => 'flag',
 			'hint' => tra('When listing forums'),
-			'default' => 'n',
+			'default' => 'y',
 		),
 		'feature_forum_content_search' => array(
 			'name' => tra('Topic content search'),
@@ -1529,11 +1550,17 @@ function prefs_feature_list($partial = false)
 			'name' => tra('Tiki-indexed search.'),
 			'type' => 'flag',
 			'default' => 'n',
+			'dependencies' => array(
+				'feature_search',
+			),
 		),
 		'feature_forum_local_search' => array(
 			'name' => tra('Use database (full-text) search.'),
 			'type' => 'flag',
 			'default' => 'n',
+			'dependencies' => array(
+				'feature_search_fulltext',
+			),
 		),
 		'feature_clear_passwords' => array(
 			'name' => tra('Store password as plain text'),
@@ -1651,8 +1678,8 @@ function prefs_feature_list($partial = false)
 			'name' => tra('Site location bar'),
 			'type' => 'list',
 			'options' => array(
-				'y' => tra('Top of page'),
-				'page' => tra('Top of center column'),
+				'y' => tra('Use breadcrumbs module'),
+				'page' => tra('Top of center column (legacy mode)'),
 				'n' => tra('None'),
 			),
 			'default' => 'y',
@@ -2009,6 +2036,14 @@ function prefs_feature_list($partial = false)
 			'help' => 'Structure',
 			'default' => 'n',
 		),
+		'feature_wiki_structure_drilldownmenu' => array(
+			'name' => tra('Structures Drill Down Menu'),
+			'type' => 'flag',
+			'help' => 'Structure',
+			'keywords' => 'wiki ajax structure',
+			'description' => tra('Ajax style drill down menu for structures'),
+			'default' => 'n',
+		),
 		'feature_wiki_open_as_structure' => array(
 			'name' => tra('Open page as structure'),
 			'type' => 'flag',
@@ -2094,6 +2129,10 @@ function prefs_feature_list($partial = false)
 			'help' => 'Attachments',
 			'description' => tra('Allow users to upload (attach) files to a page.'),
 			'default' => 'n',
+			'admin' => 'wikiatt',
+			'permission' => array(
+				'textFilter' => 'attach wiki',
+			),
 		),
 		'feature_dump' => array(
 			'name' => tra('Dumps'),
@@ -2411,6 +2450,12 @@ function prefs_feature_list($partial = false)
 			'description' => tra('Allow users to invite new users by mail to register on this tiki'),
 			'type' => 'flag',
 			'default' => 'n',
+		),
+		'feature_alternate_registration_page' => array(
+			'name' => tra('Alternate Registration Page'),
+			'description' => tra('Makes any access to tiki-register.php redirect to an alternate page for registration.'),
+			'type' => 'text',
+			'default' => 'tiki-register.php',
 		),
         'feature_loadbalancer' => array(
             'name' => tra('Load Balancer'),

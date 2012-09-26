@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: wikiplugin_memberpayment.php 40035 2012-03-04 21:22:53Z gezzzan $
+// $Id: wikiplugin_memberpayment.php 42477 2012-07-25 20:57:42Z robertplummer $
 
 function wikiplugin_memberpayment_info()
 {
@@ -75,6 +75,13 @@ function wikiplugin_memberpayment_info()
 				'filter' => 'int',
 				'default' => 0,
 			),
+			'periodslabel' => array(
+				'required' => false,
+				'name' => tra('Periods Label'),
+				'description' => tra('Give the period a label'),
+				'filter' => 'text',
+				'default' => 'Number of periods:',
+			),
 		),
 	);
 }
@@ -89,9 +96,9 @@ function wikiplugin_memberpayment( $data, $params, $offset )
 	$iPluginMemberpayment++;
 	$smarty->assign('iPluginMemberpayment', $iPluginMemberpayment);
 	$params['price'] = floatval($params['price']);
-	$default = array( 'currentuser'=>'n', 'inputtitle'=>'', 'howtitle' => '');
+	$default = array( 'currentuser'=>'n', 'inputtitle'=>'', 'howtitle' => '', 'periodslabel' => 'Number of periods:');
 	$params = array_merge($default, $params);
-
+	$smarty->assign('periodslabel', $params['periodslabel']);
 	if ( ( $info = $userlib->get_group_info($params['group']) ) && ( $info['expireAfter'] > 0 || $info['anniversary'] > '') ) {
 		$smarty->assign('wp_member_offset', $offset);
 		$smarty->assign('wp_member_price', $params['price']);

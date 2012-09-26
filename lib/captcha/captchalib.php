@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: captchalib.php 40044 2012-03-06 06:48:45Z pkdille $
+// $Id: captchalib.php 42337 2012-07-11 09:54:31Z jonnybradley $
 
 //this script may only be included - so its better to die if called directly.
 global $access;
@@ -81,6 +81,7 @@ class Captcha
 		} else {		// implied $type==='dumb'
 			require_once('lib/core/Zend/Captcha/Dumb.php');
 			$this->captcha = new Zend_Captcha_Dumb;
+			$this->captcha->setWordlen($prefs['captcha_wordLen']);
 			$this->type = 'dumb';
 		}
 

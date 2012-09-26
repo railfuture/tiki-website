@@ -1,4 +1,4 @@
-{* $Id: tiki-edit_help_plugins.tpl 33949 2011-04-14 05:13:23Z chealer $ *}
+{* $Id: tiki-edit_help_plugins.tpl 42139 2012-06-27 17:06:45Z jonnybradley $ *}
 {* \brief Show plugins help 
  * included by tiki-show_help.tpl via smarty_block_add_help() *}
 
@@ -13,7 +13,7 @@
 {/if}</p>
 
 {if $tiki_p_admin eq 'y'}
-<a href="tiki-admin.php?page=textarea" target="tikihelp" class="tikihelp">{tr}Activate/deactivate plugins{/tr}</a>
+<a href="tiki-admin.php?page=textarea&cookietab=2" target="tikihelp" class="tikihelp">{tr}Activate/deactivate plugins{/tr}</a>
 {/if}
 
 {listfilter selectors='#plugins_help_table tr'} 

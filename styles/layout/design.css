@@ -1,4 +1,4 @@
-/* $Id: design.css 41940 2012-06-13 14:27:25Z chibaguy $
+/* $Id: design.css 42617 2012-08-20 05:30:17Z chibaguy $
 	This Tiki Wiki CMS Groupware file contains common design
 	properties and, similar to lite.css and layout.css for
 	layout properties, is to be imported by theme stylesheets.
@@ -133,6 +133,11 @@ ul.jumplinks a:active {
 /* Highlight effect is just visual distinction, so no need for block element. */
 .highlight {
 	padding: 0 .3em;
+}
+
+/* Border and background should "shrinkwrap" to text size. */
+div.highlight {
+	display: inline-block;
 }
 
 .rating .highlight {
@@ -427,7 +432,9 @@ a.flip:hover,
 	margin: 0.2em;
 }
 
-
+.box-forums_most_read_topics .hits {
+	font-style: italic;
+}
 
 /* Icons */
 a.icon,
@@ -880,6 +887,14 @@ small.description {
 	padding: 5px 0px 15px 0px;
 }
 
+/* Comments (article, blogs) */
+
+#comment-container ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
 /* Comment Annotations */
 
 dl.note-list {
@@ -959,6 +974,10 @@ p.norecords {
 	font-size: 95%;
 }
 
+.thumbdescription {
+	text-align: left;
+}
+
 /***** Trackers (etc.) *****/
 
 .multiselect .odd {
@@ -966,7 +985,7 @@ p.norecords {
 	background: #f4f6f7;
 }
 
-.multiselect odd:hover {
+.multiselect .odd:hover {
 	background: #fff7e6;
 }
 
@@ -1655,6 +1674,10 @@ form.simple select
 	display: block;
 	clear: left;
 	width: 100%;
+}
+
+form.simple textarea.export {
+	height: 320px;
 }
 
 /* $.fn.modal */

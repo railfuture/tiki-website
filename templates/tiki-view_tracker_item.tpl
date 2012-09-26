@@ -1,4 +1,4 @@
-{* $Id: tiki-view_tracker_item.tpl 39754 2012-02-06 16:18:25Z jonnybradley $ *}
+{* $Id: tiki-view_tracker_item.tpl 42382 2012-07-15 20:11:47Z changi67 $ *}
 {title help="trackers"}{$tracker_info.name}{/title}
 
 {if ! isset($print_page) || $print_page ne 'y'}
@@ -174,7 +174,7 @@
 				{/if}
 				{section name=ix loop=$fields}
 					{if !empty($fields[ix].value)}
-						<input type="hidden" name="{$fields[ix].id|escape}" value="{$fields[ix].value|escape}" />
+						<input type="hidden" name="{$fields[ix].name|escape}" value="{$fields[ix].value|escape}" />
 					{/if}
 				{/section}
 				{if $cant}

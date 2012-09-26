@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: filegallib.php 41897 2012-06-11 13:06:14Z xavidp $
+// $Id: filegallib.php 42758 2012-08-25 20:02:49Z jonnybradley $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -103,20 +103,24 @@ class FileGalLib extends TikiLib
 		return $return;
 	}
 
-	function get_user_file_gallery()
+	function get_user_file_gallery($auser = '')
 	{
 		global $user, $prefs;
 		$tikilib = TikiLib::lib('tiki');
+
+		if (empty($auser)) {
+			$auser = $user;
+		}
 		
 		// Feature check + Anonymous don't have their own Users File Gallery
-		if ( $user == '' || $prefs['feature_use_fgal_for_user_files'] == 'n' || $prefs['feature_userfiles'] == 'n' || ( $userId = $tikilib->get_user_id($user) ) <= 0  ) {
+		if ( empty($auser) || $prefs['feature_use_fgal_for_user_files'] == 'n' || $prefs['feature_userfiles'] == 'n' || ( $userId = $tikilib->get_user_id($auser) ) <= 0  ) {
 			return false;
 		}
 
 		$conditions = array(
 			'type' => 'user',
 			'name' => $userId,
-			'user' => $user,
+			'user' => $auser,
 			'parentId' => $prefs['fgal_root_user_id']
 		);
 
@@ -126,7 +130,7 @@ class FileGalLib extends TikiLib
 
 		$fgal_info =& $conditions;
 		$fgal_info['public'] = 'n';
-		$fgal_info['visible'] = 'y';
+		$fgal_info['visible'] = $prefs['userfiles_private'] === 'n' ? 'y' : 'n';
 
 		// Create the user gallery if it does not exist yet
 		$idGallery = $this->replace_file_gallery($fgal_info);
@@ -695,7 +699,6 @@ class FileGalLib extends TikiLib
 	function process_batch_file_upload($galleryId, $file, $user, $description, &$errors)
 	{
 		include_once ('lib/pclzip/pclzip.lib.php');
-		include_once ('lib/mime/mimelib.php');
 		$extract_dir = 'temp/'.basename($file).'/';
 		mkdir($extract_dir);
 		$archive = new PclZip($file);
@@ -748,7 +751,7 @@ class FileGalLib extends TikiLib
 
 				$size = filesize($extract_dir.$file);
 				$name = $file;
-				$type = tiki_get_mime($extract_dir.$file);
+				$type = TikiLib::lib('mime')->from_path($file, $extract_dir.$file);
 				$fileId = $this->insert_file($galleryId, $name, $description, $name, $data, $size, $type, $user, $fhash);
 				unlink($extract_dir.$file);
 			}
@@ -1385,12 +1388,7 @@ class FileGalLib extends TikiLib
 				if ( $result = $this->getGallerySpecialRoot($galleryId, $subGalleryId, $childs) ) {
 					if ( is_integer($result) ) {
 						return $result;
-					} elseif ( $treeParentId == $prefs['fgal_root_user_id'] || $treeParentId == -1 ) {
-						//
-						// If the parent is :
-						//   - either the User File Gallery, stop here to keep only the user gallery instead of all users galleries
-						//   - or already the top root of all galleries, it means that the gallery is a special gallery root
-						//
+					} elseif ( $treeParentId == -1 ) {
 						return (int)$subGalleryId;
 					} else {
 						return true;
@@ -1450,7 +1448,7 @@ class FileGalLib extends TikiLib
 			$nodes[] = array(
 				'id' => $subGallery['id'],
 				'parent' => $subGallery['parentId'],
-				'data' => smarty_block_self_link($linkParameters, $icon . htmlspecialchars($subGallery['name']), $smarty), 
+				'data' => smarty_block_self_link($linkParameters, $icon . htmlspecialchars($subGallery['name']), $smarty),
 			);
 		}
 		$browseTreeMaker = new BrowseTreeMaker('Galleries');
@@ -1464,20 +1462,19 @@ class FileGalLib extends TikiLib
 	// HTML is a string of HTML code to display the path.
 	function getPath($galleryIdentifier)
 	{
-		global $prefs, $user;
+		global $prefs;
 		$rootIdentifier = $this->getGallerySpecialRoot($galleryIdentifier);
 		$root = $this->get_file_gallery_info($galleryIdentifier);
-		if ( $user != '' && $prefs['feature_use_fgal_for_user_files'] == 'y' ) {
-			$userGallery = $this->get_user_file_gallery();
-			if ($userGallery == $prefs['fgal_root_user_id']) {
-				$rootIdentifier = $userGallery;
+		if ( !empty($user) && $prefs['feature_use_fgal_for_user_files'] == 'y' ) {
+			if ($root['type'] === 'user') {
+				$rootIdentifier = $prefs['fgal_root_user_id'];
 			}
 		}
 		$path = array();
 		for ($node = $this->get_file_gallery_info($galleryIdentifier); $node && $node['galleryId'] != $rootIdentifier; $node = $this->get_file_gallery_info($node['parentId'])) {
-			$path[$node['galleryId']] = $node['name'];
+			$path[$node['galleryId']] = $this->getGalleryName($node);
 		}
-		if (isset($userGallery) && $rootIdentifier == $userGallery) {
+		if ($rootIdentifier == $prefs['fgal_root_user_id']) {
 			$path[$rootIdentifier] = tra('User File Galleries');
 		} elseif ($rootIdentifier == $prefs['fgal_root_wiki_attachments_id']) {
 			$path[$rootIdentifier] = tra('Wiki Attachment File Galleries');
@@ -1496,6 +1493,31 @@ class FileGalLib extends TikiLib
 			'HTML' => $pathHtml,
 			'Array' => $path
 		);
+	}
+
+	/**
+	 * Return the name of a gallery, handling individual names for user galleries
+	 *
+	 * @param array $gal_info	gallery definition
+	 * @param string $auser			username
+	 * @return string				gallery name
+	 */
+	function getGalleryName($gal_info, $auser = '') {
+
+		if ($gal_info['type'] === 'user') {
+			global $user;
+			if (empty($auser)) {
+				$auser = $user;
+			}
+			if (!empty($auser) && $gal_info['user'] == $auser) {
+				$name = tra('My Files');
+			} else {
+				$name = tra('Files of ') . ' ' . $gal_info['user'];
+			}
+		} else {
+			$name = $gal_info['name'];
+		}
+		return $name;
 	}
 
 	// get the size in k used in a fgal and its children
@@ -2576,7 +2598,10 @@ class FileGalLib extends TikiLib
 					$res['share']['nb'] = count($share_result);
 				}
 			}
-				
+			if ($res['isgal']) {
+				$res['name'] = $this->getGalleryName($res);
+			}
+
 			$n++;
 			if ( ! $need_everything && $offset != -1 && $n < $offset ) continue;
 
@@ -2682,6 +2707,8 @@ class FileGalLib extends TikiLib
 				}
 			}
 		}
+
+		$res['name'] = $this->getGalleryName($res);
 
 		return $res;
 	}
@@ -2834,6 +2861,7 @@ class FileGalLib extends TikiLib
 			if ( ! empty( $params['description'][0] ) ) $fileInfo['description'] = $params['description'][0];
 			if ( ! empty( $params['user'][0] ) ) $fileInfo['user'] = $params['user'][0];
 			if ( ! empty( $params['author'][0] ) ) $fileInfo['author'] = $params['author'][0];
+			if ( ! empty( $params['filetype'][0] ) ) $fileInfo['filetype'] = $params['filetype'][0];
 
 		} else {
 			$editFileId = 0;
@@ -3383,17 +3411,8 @@ class FileGalLib extends TikiLib
 				}
 			}
 
-			if (class_exists('finfo')) {
-				$php53 = defined('FILEINFO_MIME_TYPE');
-				$finfo = new finfo($php53 ? FILEINFO_MIME_TYPE : FILEINFO_MIME);
-				$type = $finfo->buffer($result);
-
-				if (! $php53) {
-					$type = reset(explode(';', $type));
-				}
-			} else {
-				$type = $response->getHeader('Content-Type');
-			}
+			$mimelib = TikiLib::lib('mime');
+			$type = $mimelib->from_content($name, $result);
 
 			$size = function_exists('mb_strlen') ? mb_strlen($result, '8bit') : strlen($result);
 
@@ -3562,7 +3581,7 @@ class FileGalLib extends TikiLib
 	{
 		global $user;
 		$tikilib = TikiLib::lib('tiki');
-		include_once('lib/mime/mimelib.php');
+		$mimelib = TikiLib::lib('mime');
 		$argumentParser = new WikiParser_PluginArgumentParser;
 		$files = array();
 		if (strpos($page_info['data'], 'img/wiki_up') === false) {
@@ -3582,7 +3601,7 @@ class FileGalLib extends TikiLib
 							continue;
 						}
 						$name = preg_replace('|.*/([^/]*)|', '$1', $val);
-						$fileId = $this->insert_file($fgalId, $name, 'Used in '.$page_info['pageName'], $name, $data, strlen($data), tiki_get_mime($name, 'application/octet-stream', $val), $user, '', 'wiki_up conversion');
+						$fileId = $this->insert_file($fgalId, $name, 'Used in '.$page_info['pageName'], $name, $data, strlen($data), $mimelib->from_path($name, $val), $user, '', 'wiki_up conversion');
 						if (empty($fileId)) {
 							$errors[] = tra('Cannot upload this file').' '.$val.' '.tra('Page:').' '.$page_info['pageName'];
 							continue;
@@ -3617,33 +3636,9 @@ class FileGalLib extends TikiLib
 		if ($fileData['filetype'] != "application/octet-stream") {
 			return $fileData['filetype'];
 		}
-		$suffix=strtolower(preg_replace('/.*\./', '', $fileData['filename']));
-		switch($suffix) {
-			case 'jpg' :
-			case 'jpeg' :	$filetype = 'image/jpeg';
-							break;
-			case 'gif' :	$filetype = 'image/gif';
-							break;
-			case 'png' :	$filetype = 'image/png';
-							break;
-			case 'tif' :
-			case 'tiff' :	$filetype = 'image/tiff';
-							break;
-			case 'svg' :	$filetype = 'image/svg+xml';
-							break;
-			case 'pdf' :	$filetype = 'application/pdf';
-							break;
-			case 'doc' :	$filetype = 'application/msword';
-							break;
-			case 'ppt' :	$filetype = 'application/vnd.ms-powerpoint';
-							break;
-			case 'xls' :	$filetype = 'application/vnd.ms-excel';
-							break;
-			case 'docx' :	$filetype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-							break;
-			default :		$filetype = 'application/octet-stream';
-		}
-		return $filetype;
+
+		$mimelib = TikiLib::lib('mime');
+		return $mimelib->from_filename($fileData['filename']);
 	}
 	
 }

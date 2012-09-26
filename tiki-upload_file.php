@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-upload_file.php 40234 2012-03-17 19:17:41Z changi67 $
+// $Id: tiki-upload_file.php 42410 2012-07-18 15:44:19Z jonnybradley $
 
 $section = 'file_galleries';
 $isUpload = false;
@@ -59,6 +59,10 @@ if ( ! empty( $_REQUEST['fileId'] ) ) {
 		$smarty->display('error.tpl');
 		die;
 	}
+	include_once ('lib/mime/mimetypes.php');
+	global $mimetypes;
+	asort($mimetypes);
+	$smarty->assign_by_ref('mimetypes', $mimetypes);
 }
 
 if (isset($_REQUEST['galleryId'][0])) {
@@ -153,7 +157,8 @@ if ( $isUpload ) {
 		'deleteAfter_unit',
 		'hit_limit',
 		'listtoalert',
-		'insertion_syntax'
+		'insertion_syntax',
+		'filetype',
 	);
 
 	$uploadParams = array(

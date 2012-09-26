@@ -1,4 +1,4 @@
-{* $Id: list_file_gallery.tpl 41041 2012-04-22 21:48:23Z sylvieg $ *}
+{* $Id: list_file_gallery.tpl 42156 2012-06-28 17:35:51Z jonnybradley $ *}
 
 {if ( isset($tree) and count($tree) gt 0 && $tiki_p_list_file_galleries != 'n' && $fgal_options.show_explorer.value eq 'y' && $tiki_p_view_fgal_explorer eq 'y' ) or ( $gallery_path neq '' && $fgal_options.show_path.value eq 'y' && $tiki_p_view_fgal_path eq 'y' )}
 
@@ -78,7 +78,7 @@
 
 				{if $files and $gal_info.show_checked neq 'n' and $prefs.fgal_checked eq 'y' and
 						($tiki_p_admin_file_galleries eq 'y' or $tiki_p_upload_files eq 'y' or $tiki_p_assign_perm_file_gallery eq 'y')
-						and ($prefs.fgal_show_thumbactions eq 'y' or $show_details eq 'y')}
+						and ($prefs.fgal_show_thumbactions eq 'y' or $show_details eq 'y' or $view neq 'browse')}
 					<div id="sel">
 						<div>
 							{if $tiki_p_admin_file_galleries eq 'y' or $tiki_p_remove_files eq 'y' or !isset($file_info) or $tiki_p_admin_file_galleries eq 'y' or $prefs.fgal_display_zip_option eq 'y' or $tiki_p_assign_perm_file_gallery eq 'y'}

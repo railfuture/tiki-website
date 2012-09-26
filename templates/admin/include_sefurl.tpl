@@ -1,4 +1,4 @@
-{* $Id: include_sefurl.tpl 37653 2011-09-25 16:08:29Z chealer $ *}
+{* $Id: include_sefurl.tpl 42430 2012-07-19 21:40:07Z jonnybradley $ *}
 
 {remarksbox type="tip" title="{tr}Tip{/tr}"}
 	{tr}See also{/tr} <a class="rbox-link" href="tiki-admin.php?page=metatags">{tr}Meta-tags{/tr}</a>.
@@ -40,6 +40,12 @@
 				{remarksbox type="warning" title="{tr}Warning{/tr}"}
 				{tr _0=$enabledFileName}%0 file is out of date.{/tr} {tr}SEFURL may not work completely or correctly if Tiki URL rewriting configuration is not current.{/tr}
 				{tr _0="<strong>$referenceFileName</strong>" _1="<strong>$enabledFileName</strong>"}To update this file, if it was not customized, copy the %0 file (located in the main directory of your Tiki installation) to %1, overwriting the latter.{/tr}
+				{/remarksbox}
+			{/if}
+			{if not empty($rewritebaseSetting)}
+				{remarksbox type="warning" title="{tr}Warning{/tr}"}
+					{tr}The RewriteBase directive seems not to be set up correctly. This is required for sefurl to function correctly.{/tr}<br>
+					{tr _0=$enabledFileName _1=$rewritebaseSetting _2=$url_path}The current value in %0 is %1 but the base url for this site is %2{/tr}
 				{/remarksbox}
 			{/if}
 		{/if}

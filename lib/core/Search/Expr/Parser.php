@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: Parser.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: Parser.php 42154 2012-06-28 15:39:14Z jonnybradley $
 
 class Search_Expr_Parser
 {
@@ -38,7 +38,12 @@ class Search_Expr_Parser
 		if (count($tokens) === 1) {
 			return reset($tokens);
 		} else {
-			return new Search_Expr_Or($tokens);
+			global $prefs;
+			if ($prefs['unified_lucene_default_operator'] == Zend_Search_Lucene_Search_QueryParser::B_AND) {
+				return new Search_Expr_And($tokens);
+			} else {
+				return new Search_Expr_Or($tokens);
+			}
 		}
 	}
 

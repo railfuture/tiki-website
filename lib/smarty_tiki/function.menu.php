@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: function.menu.php 40260 2012-03-20 16:46:42Z jonnybradley $
+// $Id: function.menu.php 42510 2012-08-01 19:49:08Z robertplummer $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -23,8 +23,8 @@ if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
  */
 function smarty_function_menu($params, $smarty)
 {
-	global $tikilib, $user, $headerlib, $prefs;
-	global $menulib; include_once('lib/menubuilder/menulib.php');
+	global $headerlib, $prefs;
+
 	$default = array('css' => 'y');
 	if (isset($params['params'])) {
 		$params = array_merge($params, $params['params']);
@@ -46,7 +46,7 @@ function smarty_function_menu($params, $smarty)
 		$menu_cookie = 'y';
 	}
 	$smarty->assignByRef('menu_cookie', $menu_cookie);
-	if ($css !== 'n' && $prefs['feature_cssmenus'] == 'y') {
+	if ($css !== 'n' && $prefs['feature_cssmenus'] == 'y' && $drilldown != 'y') {
 		static $idCssmenu = 0;
 		if (empty($type)) {
 			$type = 'vert';
@@ -60,17 +60,47 @@ function smarty_function_menu($params, $smarty)
 		} else {
 			$smarty->assign('idCssmenu', $css_id);
 		}
+	} elseif ($drilldown == 'y') {
+		$tpl = 'tiki-user_drilldownmenu.tpl';
 	} else {
 		$tpl = 'tiki-user_menu.tpl';
 	}
 
+	list($menu_info, $channels) = get_menu_with_selections($params);
+
+	$smarty->assign('menu_channels', $channels['data']);
+	$smarty->assign('menu_info', $menu_info);
+	$data = $smarty->fetch($tpl);
+	$data = preg_replace('/<ul>\s*<\/ul>/', '', $data);
+	$data = preg_replace('/<ol>\s*<\/ol>/', '', $data);
+	if ($prefs['mobile_feature'] !== 'y' || $prefs['mobile_mode'] !== 'y') {
+		return '<nav class="role_navigation">' . $data . '</nav>';
+	} else {
+		$data = preg_replace('/<ul ([^>]*)>/Umi', '<ul $1 data-role="listview" data-theme="'.$prefs['mobile_theme_menus'].'">', $data, 1);
+		// crude but effective hack for loading menu items via ajax - hopefully to be replaced by something more elegant soon
+		$data = preg_replace('/<a ([^>]*)>/Umi', '<a $1 rel="external">', $data);
+		return $data;
+	}
+}
+
+function compare_menu_options($a, $b)
+{
+	return strcmp(tra($a['name']), tra($b['name']));
+}
+
+function get_menu_with_selections($params) {
+	global $tikilib, $user, $prefs;
+	global $menulib; include_once('lib/menubuilder/menulib.php');
 	global $cachelib; include_once('lib/cache/cachelib.php');
 	$cacheName = isset($prefs['mylevel']) ? $prefs['mylevel'] : 0;
 	$cacheName .= '_'.$prefs['language'].'_'.md5(implode("\n", $tikilib->get_user_groups($user)));
+
+	extract($params, EXTR_SKIP);
+
 	if (isset($structureId)) {
 		$cacheType = 'structure_'.$structureId;
 	} else {
-		$cacheType = 'menu_'.$id.'_';
+		$cacheType = 'menu_'. $id .'_';
 	}
 
 	if ( $cdata = $cachelib->getSerialized($cacheName, $cacheType) ) {
@@ -97,22 +127,5 @@ function smarty_function_menu($params, $smarty)
 	}
 	$channels = $menulib->setSelected($channels, isset($sectionLevel)?$sectionLevel:'', isset($toLevel)?$toLevel: '', $params);
 
-	$smarty->assign('menu_channels', $channels['data']);
-	$smarty->assign('menu_info', $menu_info);
-	$data = $smarty->fetch($tpl);
-	$data = preg_replace('/<ul>\s*<\/ul>/', '', $data);
-	$data = preg_replace('/<ol>\s*<\/ol>/', '', $data);
-	if ($prefs['mobile_feature'] !== 'y' || $prefs['mobile_mode'] !== 'y') {
-		return '<nav class="role_navigation">' . $data . '</nav>';
-	} else {
-		$data = preg_replace('/<ul ([^>]*)>/Umi', '<ul $1 data-role="listview" data-theme="'.$prefs['mobile_theme_menus'].'">', $data, 1);
-		// crude but effective hack for loading menu items via ajax - hopefully to be replaced by something more elegant soon
-		$data = preg_replace('/<a ([^>]*)>/Umi', '<a $1 rel="external">', $data);
-		return $data;
-	}
-}
-
-function compare_menu_options($a, $b)
-{
-	return strcmp(tra($a['name']), tra($b['name']));
+	return array($menu_info, $channels);
 }

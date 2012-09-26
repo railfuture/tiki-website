@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: absolute_urls.php 40057 2012-03-06 21:51:17Z pkdille $
+// $Id: absolute_urls.php 42470 2012-07-25 16:58:59Z robertplummer $
 
 //this script may only be included - so its better to die if called directly.
 $access->check_script($_SERVER['SCRIPT_NAME'], basename(__FILE__));
@@ -33,6 +33,8 @@ if ( $prefs['http_port'] == 80 )
 //    This is useful in certain cases.
 //    For example, this allow to have full HTTPS when using an entrance proxy that will use HTTPS connection with the client browser, but use an HTTP only connection to the server that hosts tikiwiki.
 //
+global $https_mode,$url_scheme,$url_host,$url_port,$url_path,$base_host,$base_url,$base_url_http,$base_url_https;
+
 $https_mode = false;
 if ( ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' )
 	 || ( $prefs['https_port'] == '' && isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443 )

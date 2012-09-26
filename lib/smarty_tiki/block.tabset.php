@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: block.tabset.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: block.tabset.php 42167 2012-06-29 18:00:55Z jonnybradley $
 
 /**
  * Smarty plugin
@@ -141,7 +141,7 @@ if (ctab) {
 			);
 		}
 		if ($cookietab != getCookie($smarty_tabset_name, 'tabs', 1)) {	// has been changed by code but now too late to reset
-			$headerlib->add_jq_onready('setCookie("'.$smarty_tabset_name.'","tabs",'.$cookietab.');');
+			$headerlib->add_jq_onready('setCookie("'.$smarty_tabset_name.'",'.$cookietab.',"tabs");');
 		} else {
 			$headerlib->add_jq_onready('tikitabs(getCookie("'.$smarty_tabset_name.'","tabs",1), $("div[data-name='.$smarty_tabset_name.'] .tabmark:first"));');
 		}

@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: search.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: search.php 42317 2012-07-09 21:25:37Z jonnybradley $
 
 function prefs_search_list()
 {
@@ -39,7 +39,7 @@ function prefs_search_list()
 		),
 		'search_default_interface_language' => array(
 			'name' => tra('Restrict search language by default'),
-			'description' => tra('If enabled, only search content in the interface language, by default.'),
+			'description' => tra('If enabled, only search content in the interface language, otherwise show language menu.'),
 			'type' => 'flag',
 			'default' => 'n',
 		),
@@ -47,6 +47,16 @@ function prefs_search_list()
 			'name' => tra('Autocomplete on page names'),
 			'type' => 'flag',
 			'dependencies' => array('feature_jquery_autocomplete', 'javascript_enabled'),
+			'default' => 'n',
+		),
+		'search_show_category_filter' => array(
+			'name' => tra('Category filter'),
+			'type' => 'flag',
+			'default' => 'n',
+		),
+		'search_show_tag_filter' => array(
+			'name' => tra('Tag filter'),
+			'type' => 'flag',
 			'default' => 'n',
 		),
 	);

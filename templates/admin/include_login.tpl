@@ -1,4 +1,4 @@
-{* $Id: include_login.tpl 39910 2012-02-22 18:48:57Z marclaporte $ *}
+{* $Id: include_login.tpl 42515 2012-08-02 13:00:58Z jonnybradley $ *}
 {jq}		
 	$("#genPass span").click(function () {
 		var passcodeId = $("input[name=registerPasscode]").attr('id');
@@ -61,6 +61,7 @@
 						</div>
 					{/if}
 					{preference name=generate_password}
+					{preference name=http_referer_registration_check}
 					<div class="adminoptionbox">
 						<div class="adminoptionlabel">
 							<label for="registration_choices">{tr}Users can select a group to join at registration:{/tr}</label>
@@ -76,6 +77,7 @@
 								{/foreach}
 							</select>
 						</div>
+						{preference name=user_must_choose_group}
 						{preference name=url_after_validation}
 					</div>
 				</div>

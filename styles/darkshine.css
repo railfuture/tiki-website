@@ -1,4 +1,4 @@
-/* $Id: darkshine.css 41353 2012-05-05 04:33:56Z chibaguy $
+/* $Id: darkshine.css 42439 2012-07-22 12:27:08Z chibaguy $
 	Dark Shine theme for Tiki Wiki CMS Groupware. This is an adaptation
 	of the original by Jack Qiao (http://www.pureweb.ca/blog/).
 	This is released under the GNU/LGPL license.
@@ -771,7 +771,7 @@ a.pagetitle {
 	margin: 4px;
 	border: 1px dashed #ADACAF;
 	overflow: auto;
-   width: 500px}
+}
 
 .codecaption {
 	font-size: 90%;

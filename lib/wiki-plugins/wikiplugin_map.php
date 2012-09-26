@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: wikiplugin_map.php 42010 2012-06-20 14:35:40Z lphuberdeau $
+// $Id: wikiplugin_map.php 42576 2012-08-15 15:33:49Z eromneg $
 
 function wikiplugin_map_info()
 {
@@ -20,15 +20,15 @@ function wikiplugin_map_info()
 		'params' => array(
 			'scope' => array(
 				'required' => false,
-				'name' => tr('Scope'),
-				'description' => tr('Display the geolocated items represented in the page. (all, center, or custom as a CSS selector)'),
+				'name' => tra('Scope'),
+				'description' => tr('Display the geolocated items represented in the page (all, center, or custom as a CSS selector). Default: center'),
 				'filter' => 'striptags',
 				'default' => 'center',
 			),
 			'controls' => array(
 				'required' => false,
-				'name' => tr('Controls'),
-				'description' => tr('Allows to specify which map controls will be displayed on the map and around it.'),
+				'name' => tra('Controls'),
+				'description' => tr('Allows to specify which map controls will be displayed on the map and around it (controls, layers, search_location, levels, current_location, scale, streetview, navigation, coordinates, overview)'),
 				'filter' => 'word',
 				'separator' => ',',
 				'default' => wp_map_default_controls(),
@@ -47,8 +47,8 @@ function wikiplugin_map_info()
 			),
 			'center' => array(
 				'requied' => false,
-				'name' => tr('Center'),
-				'description' => tr('Center and zoom level of the map display.'),
+				'name' => tra('Center'),
+				'description' => tr('Format: x,y,zoom where x is the longitude, and y is the latitude. Zoom is between 0(view Earth) and 19.'),
 				'filter' => 'text',
 			),
 			'mapfile' => array(

@@ -1,4 +1,4 @@
-{* $Id: include_look.tpl 40334 2012-03-23 20:21:38Z jonnybradley $ *}
+{* $Id: include_look.tpl 42253 2012-07-07 15:35:33Z marclaporte $ *}
 <form action="tiki-admin.php?page=look" id="look" name="look" class="labelColumns" onreset="return(confirm("{tr}Cancel Edit{/tr}"))" class="admin" method="post">
 	<div class="heading input_submit_container" style="text-align: right">
 		<input type="submit" name="looksetup" value="{tr}Apply{/tr}" />
@@ -36,15 +36,16 @@
 				{/if}	
 			</div>
 
-			{preference name=feature_fixed_width}
-			<div class="adminoptionboxchild" id="feature_fixed_width_childcontainer">
-				{preference name=layout_fixed_width}
-			</div>
 
 			{preference name=change_theme}
 			<div class="adminoptionboxchild" id="change_theme_childcontainer">
 				{tr}Restrict available themes{/tr}
 				{preference name=available_styles}
+			</div>
+
+			{preference name=feature_fixed_width}
+			<div class="adminoptionboxchild" id="feature_fixed_width_childcontainer">
+				{preference name=layout_fixed_width}
 			</div>
 
 			{preference name=useGroupTheme}

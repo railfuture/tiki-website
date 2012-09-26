@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: prefs.php 42053 2012-06-23 13:51:40Z marclaporte $
+// $Id: prefs.php 42578 2012-08-15 16:53:43Z jonnybradley $
 
 // RULE1: $prefs does not contain serialized values. Only the database contains serialized values.
 // RULE2: put array('') in default prefs for serialized values
@@ -173,7 +173,6 @@ function get_default_prefs()
 		'userbreadCrumb' => 4,
 		'uf_use_db' => 'y',
 		'uf_use_dir' => '',
-		'userfiles_quota' => 30,
 		'feature_community_friends_permission' => 'n',
 		'feature_community_friends_permission_dep' => '2',
 		'lowercase_username' => 'n',

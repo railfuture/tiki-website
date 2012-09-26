@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-download_userfile.php 39467 2012-01-12 19:47:28Z changi67 $
+// $Id: tiki-download_userfile.php 42542 2012-08-06 18:48:41Z lphuberdeau $
 
 $force_no_compression = true;
 require_once ('tiki-setup.php');
@@ -17,8 +17,8 @@ $access->check_feature('feature_userfiles');
 
 $info = $userfileslib->get_userfile($user, $_REQUEST["fileId"]);
 if ( empty($info['filetype']) || $info['filetype'] == 'application/x-octetstream' || $info['filetype'] == 'application/octet-stream' ) {
-	include_once('lib/mime/mimelib.php');
-	$info['filetype'] = tiki_get_mime($info['filename'], 'application/octet-stream');
+	$mimelib = TikiLib::lib('mime');
+	$info['filetype'] = $mimelib->from_filename($info['filename']);
 }
 $type = &$info["filetype"];
 $file = &$info["filename"];

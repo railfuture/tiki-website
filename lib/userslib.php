@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: userslib.php 41977 2012-06-17 14:03:23Z changi67 $
+// $Id: userslib.php 42665 2012-08-22 12:31:58Z lphuberdeau $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER['SCRIPT_NAME'], basename(__FILE__)) !== false) {
@@ -23,6 +23,7 @@ define('ACCOUNT_DISABLED', -6);
 define('ACCOUNT_WAITING_USER', -9);
 define('USER_AMBIGOUS', -7);
 define('USER_NOT_VALIDATED', -8);
+define('USER_PREVIOUSLY_VALIDATED', -10);
 
 //added for Auth v1.3 support
 define('AUTH_LOGIN_OK', 0);
@@ -37,6 +38,7 @@ class UsersLib extends TikiLib
 	var $groupinclude_cache;
 	var $userobjectperm_cache; // used to cache queries in object_has_one_permission()
 	var $get_object_permissions_for_user_cache;
+	static $cas_initialized = false;
 
 	function __construct()
 	{
@@ -280,7 +282,7 @@ class UsersLib extends TikiLib
 			$url .= '?' . SID;
 
 		if ( $prefs['auth_method'] === 'cas' && $user !== 'admin' && $user !== '' && $prefs['cas_force_logout'] === 'y' ) {
-			phpCAS::logoutWithRedirectServiceAndUrl($url, $url);
+			phpCAS::logoutWithRedirectService($url);
 		}
 		unset($_SESSION['cas_validation_time']);
 		unset($_SESSION[$user_cookie_site]);
@@ -879,14 +881,13 @@ class UsersLib extends TikiLib
 		// just make sure we're supposed to be here
 		if ($prefs['auth_method'] != 'cas') {
 			return false;
-		}
-
-		// import phpCAS lib
-		require_once('lib/phpcas/CAS.php');
-
-		// initialize phpCAS
-		if ( !isset($GLOBALS['PHPCAS_CLIENT']) ) {
+		} 
+		if ( self::$cas_initialized === false ){
+			// import phpCAS lib
+			require_once('lib/phpcas/CAS.php');
+			// initialize phpCAS
 			phpCAS::client($prefs['cas_version'], '' . $prefs['cas_hostname'], (int) $prefs['cas_port'], '' . $prefs['cas_path'], false);
+			self::$cas_initialized = true;
 		}
 
 		return true;
@@ -1421,7 +1422,7 @@ class UsersLib extends TikiLib
 			if (!empty($res['valid']) && $pass == $res['valid']) // used for validation of user account before activation
 				return array(USER_VALID, $user);
 
-			if ($res['waiting'] == 'u')
+			if ($validate_phase && $res['waiting'] == 'u')
 				return array(ACCOUNT_WAITING_USER, $user);
 			if ($res['waiting'] == 'a')
 				return array(ACCOUNT_DISABLED, $user);
@@ -1438,6 +1439,9 @@ class UsersLib extends TikiLib
 			if ($this->hash_pass($pass, $res['hash']) == $res['hash']) // new method (crypt-md5) and tikihash method (md5(pass))
 				return array(USER_VALID, $user);
 
+			if ($validate_phase && empty($res['waiting'])) {
+				return array(USER_PREVIOUSLY_VALIDATED, $user);
+			}
 			return array(PASSWORD_INCORRECT, $user);
 		} else {
 			// Use challenge-reponse method
@@ -1467,7 +1471,7 @@ class UsersLib extends TikiLib
 		global $prefs, $tikilib;
 		$ret = $this->update_lastlogin($user);
 
-		if (is_null($current)) {
+		if (empty($current)) {
 			// First time
 			$current = 0;
 		}

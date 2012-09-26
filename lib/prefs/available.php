@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: available.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: available.php 42404 2012-07-17 23:56:18Z marclaporte $
 
 function prefs_available_list($partial = false)
 {
@@ -33,6 +33,7 @@ function prefs_available_list($partial = false)
 			'dependencies' => array(
 				'feature_multilingual',
 			),
+			'tags' => array('basic'),
 			'options' => $map,
 			'default' => array(),
 		),

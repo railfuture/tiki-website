@@ -1,4 +1,4 @@
-{* $Id: include_general.tpl 41962 2012-06-14 23:06:06Z marclaporte $ *}
+{* $Id: include_general.tpl 42500 2012-07-31 16:51:15Z robertplummer $ *}
 
 <form action="tiki-admin.php?page=general" class="admin" method="post">
 	<input type="hidden" name="new_prefs" />
@@ -239,6 +239,7 @@
 				</div>
 				{preference name='url_anonymous_page_not_found'}
 				{preference name='url_after_validation'}
+				{preference name='feature_alternate_registration_page'}
 			</fieldset>
 
 			<fieldset>

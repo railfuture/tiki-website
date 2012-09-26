@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: wikiplugin_events.php 40035 2012-03-04 21:22:53Z gezzzan $
+// $Id: wikiplugin_events.php 42277 2012-07-08 20:01:23Z jonnybradley $
 
 function wikiplugin_events_info()
 {
@@ -63,11 +63,7 @@ function wikiplugin_events_info()
 
 function wikiplugin_events($data,$params)
 {
-	global $calendarlib;
-	global $userlib;
-	global $tikilib;
-	global $tiki_p_admin;
-	global $tiki_p_view_calendar, $smarty;
+	global $calendarlib, $userlib, $tikilib, $tiki_p_admin, $tiki_p_view_calendar, $smarty, $user;
 
 	if (!isset($calendarlib)) {
 		include_once ('lib/calendar/calendarlib.php');

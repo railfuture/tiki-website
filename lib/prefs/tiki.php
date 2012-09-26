@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki.php 39947 2012-02-24 20:47:50Z jonnybradley $
+// $Id: tiki.php 42554 2012-08-08 15:12:38Z marclaporte $
 
 function prefs_tiki_list()
 {
@@ -116,7 +116,7 @@ function prefs_tiki_list()
 			'description' => tra('Do not trust user input and open the files to verify their content.'),
 			'type' => 'flag',
 			'extensions' => array('fileinfo'),
-			'default' => 'n',
+			'default' => 'y',
 		),
 		'tiki_allow_trust_input' => array(
 			'name' => tra('Allow the tiki_p_trust_input permission.'),

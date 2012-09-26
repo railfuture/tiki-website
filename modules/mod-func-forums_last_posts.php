@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: mod-func-forums_last_posts.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: mod-func-forums_last_posts.php 42374 2012-07-14 16:26:42Z jonnybradley $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -30,6 +30,10 @@ function module_forums_last_posts_info()
 			'date' => array(
 				'name' => tra('Show date'),
 				'description' => tra('If set to "y", show post date directly instead of as tooltip.') . ' ' . tra('Default:') . ' n',
+			),
+			'time' => array(
+				'name' => tra('Show time'),
+				'description' => tra('Show times after dates.') . ' ' . tra('Default:') . ' y',
 			),
 			'author' => array(
 				'name' => tra('Show author'),

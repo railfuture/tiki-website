@@ -1,4 +1,4 @@
-{* $Id: tiki-assignuser.tpl 36077 2011-08-11 16:04:59Z sept_7 $ *}
+{* $Id: tiki-assignuser.tpl 42283 2012-07-09 03:24:47Z marclaporte $ *}
 
 {assign var=escuser value=$assign_user|escape:url}
 {title}{tr _0=$assign_user}Assign User %0 to Groups{/tr}{/title}
@@ -10,6 +10,10 @@
 	{if $tiki_p_admin eq 'y' or $tiki_p_admin_users eq 'y'}
 		{button href="tiki-adminusers.php" _text="{tr}Admin users{/tr}"}
 	{/if}
+
+	{button href="tiki-user_preferences.php?view_user=$assign_user" _text="{tr}User Preferences{/tr}"}
+	{button href="tiki-user_information.php?view_user=$assign_user" _text="{tr}User Information{/tr}"}
+
 </div>
 
 {if $prefs.feature_intertiki eq 'y' and $prefs.feature_intertiki_import_groups eq 'y'}

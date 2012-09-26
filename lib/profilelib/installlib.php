@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: installlib.php 41793 2012-06-05 17:01:54Z lphuberdeau $
+// $Id: installlib.php 42379 2012-07-14 17:35:55Z jonnybradley $
 
 class Tiki_Profile_Installer
 {
@@ -1341,7 +1341,7 @@ class Tiki_Profile_InstallHandler_Module extends Tiki_Profile_InstallHandler // 
 		$data['params'] = http_build_query($data['params'], '', '&');
 		
 		if ( $data['custom'] ) {
-			$modlib->replace_user_module($data['name'], $data['name'], (string) $data['custom']);
+			$modlib->replace_user_module($data['name'], $data['name'], (string) $data['custom'], $data['parse']);
 		}
 
 		if ( is_null($data['params']) ) {
@@ -2894,11 +2894,11 @@ class Tiki_Profile_InstallHandler_Sheet extends Tiki_Profile_InstallHandler // {
 	function _install()
 	{
 		if ($this->canInstall()) {
-			global $user;
+			global $user, $sheetlib;
 			require_once ('lib/sheet/grid.php');
 			
 			//here we convert the array to that of what is acceptable to the sheet lib
-			$parentSheetId;
+			$parentSheetId = null;
 			$sheets = array();
 			$nbsheets = count($this->data);	
 			for ($sheetI = 0; $sheetI < $nbsheets; $sheetI++) {

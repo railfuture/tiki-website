@@ -1,4 +1,4 @@
-/* $Id: business.css 41690 2012-06-01 02:01:26Z chibaguy $
+/* $Id: business.css 42454 2012-07-23 12:21:09Z chibaguy $
 	Business theme stylesheet (business.css) for Tiki Wiki CMS Groupware,
 	based on the original by Eatlon.com (http://eatlon.com/work/business/).
 	Visit http://themes.tiki.org for more information.
@@ -569,6 +569,10 @@ h3.box-title a:visited {
 .rbox-title {
 	background: #003371 url(business/header.png) repeat-x;
 	color: #fff;
+}
+
+.rbox-title {
+	margin-bottom: -.45em;	
 }
 
 .rbox-data {

@@ -1,4 +1,4 @@
-{* $Id: include_security.tpl 39947 2012-02-24 20:47:50Z jonnybradley $ *}
+{* $Id: include_security.tpl 42719 2012-08-24 20:52:07Z marclaporte $ *}
 
 <div class="navbar">
 	{button href="tiki-admingroups.php" _text="{tr}Admin Groups{/tr}"}
@@ -72,7 +72,7 @@
 					{preference name=comments_akismet_apikey}
 					{preference name=comments_akismet_check_users}
 				</div>
-			
+			{preference name=http_referer_registration_check}			
 		{/tab}
 	
 		{tab name="{tr}Search results{/tr}"}

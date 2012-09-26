@@ -1,4 +1,4 @@
-{* $Id: list_file_gallery_content.tpl 39962 2012-02-27 08:22:08Z sept_7 $ *}
+{* $Id: list_file_gallery_content.tpl 42757 2012-08-25 19:13:48Z jonnybradley $ *}
 {if empty($sort_arg)}{assign var='sort_arg' value='sort_mode'}{/if}
 <table class="normal">
 	<tr>
@@ -12,14 +12,16 @@
 			<th style="width:1%">&nbsp;</th>
 		{/if}
 
-		{if $gal_info.show_parentName eq 'y'}
+		{if !empty($show_parentName) and $show_parentName eq 'y'}{* assigned in wikiplugin_files *}
 			<th>
 				{self_link _sort_arg=$sort_arg _sort_field='parentName'}{tr}Gallery{/tr}{/self_link}
 			</th>
+			{assign var=nbCols value=$nbCols+1}
 		{/if}
-		{if !empty($show_thumb) and $show_thumb eq 'y'}
+		{if !empty($show_thumb) and $show_thumb eq 'y'}{* assigned in wikiplugin_files *}
 			<th>
 			</th>
+			{assign var=nbCols value=$nbCols+1}
 		{/if}
 
 		{foreach from=$fgal_listing_conf item=item key=propname}
@@ -63,7 +65,7 @@
 					</th>
 				{/if}
 
-				{if !($galleryId eq 0 and $propname eq 'lockedby') and ($propname neq 'name' or ( $gal_info.show_name eq 'a' or $gal_info.show_name eq 'n' ))}
+				{if !($galleryId eq 0 and $propname eq 'lockedby') and ($propname neq 'name' or ( $gal_info.show_name eq 'a' or $gal_info.show_name eq 'n' )) and ($propname neq 'description' or $gal_info.show_name neq 'n')}
 					{assign var=nbCols value=$nbCols+1}
 					<th{$td_args}>
 							{self_link _sort_arg=$sort_arg _sort_field=$propname _title=$link_title}
@@ -136,15 +138,13 @@
 				{/capture}
 			{/if}
 
-			{capture name=over_preview}
-				{strip}
-					{if $files[changes].type|truncate:6:'':true eq 'image/'}
-						<div class='opaque'>
-							<img src="{$files[changes].id|sefurl:thumbnail}" />
-						</div>
-					{/if}
-				{/strip}
-			{/capture}
+			{capture name=over_preview}{strip}
+				{if $files[changes].type|truncate:6:'':true eq 'image/'}
+					<div class='opaque'>
+						<img src="{$files[changes].id|sefurl:thumbnail}" />
+					</div>
+				{/if}
+			{/strip}{/capture}
 
 			{assign var=nb_over_infos value=0}
 			{capture name=over_infos}
@@ -152,7 +152,7 @@
 					<div class='opaque'>
 						<div class='box-title'>{tr}Properties{/tr}</div>
 						<div class='box-data'>
-							<div>
+							<table>
 								{foreach item=prop key=propname from=$fgal_listing_conf}
 									{if isset($prop.key)}
 										{assign var=propkey value=$item.key}
@@ -174,15 +174,16 @@
 										{assign var=propval value=$propval|kbsize:true}
 									{elseif $propname eq 'backlinks'}
 										{assign var=propval value=$files[changes].nbBacklinks}
+									{elseif $propname eq 'description'}
+							    	   {assign var=propval value=$propval|nl2br}
 									{/if}
 
 									{if isset($gal_info.$propkey) and $propval neq '' and ( $gal_info.$propkey eq 'a' or $gal_info.$propkey eq 'o' )}
-										<b>{$fgal_listing_conf.$propname.name}</b>: {$propval}
-										<br />
+										<tr><td><b>{$fgal_listing_conf.$propname.name}</b>:</td> <td>{$propval}</td></tr>
 										{assign var=nb_over_infos value=$nb_over_infos+1}
 									{/if}
 								{/foreach}
-							</div>
+							</table>
 						</div>
 					</div>
 				{/strip}
@@ -235,12 +236,12 @@
 				</td>
 			{/if}
 
-			{if $show_parentName eq 'y'}
+			{if !empty($show_parentName) and $show_parentName eq 'y'}{* assigned in wikiplugin_files *}
 				<td>
 					<a href="tiki-list_file_gallery.php?galleryId={$files[changes].galleryId}">{$files[changes].parentName|escape}</a>
 				</td>
 			{/if}
-			{if $show_thumb eq 'y'}
+			{if !empty($show_thumb) and  $show_thumb eq 'y'}{* assigned in wikiplugin_files *}
 				<td>
 					{if $files[changes].isgal == 0}
 						<a href="{if $absurl == 'y'}{$base_url}{/if}tiki-download_file.php?fileId={$files[changes].fileId}&display"><img src="{if $absurl == 'y'}{$base_url}{/if}tiki-download_file.php?fileId={$files[changes].fileId}&thumbnail" /></a>
@@ -296,6 +297,14 @@
 							{assign var=propval value="<a class='fgalname namealias' $link>$propval</a>"}
 						{else}
 							{assign var=propval value="<a class='fgalname' $link>$propval</a>"}
+						{/if}
+						{if $propname eq 'name' and $gal_info.show_name eq 'n'}
+							{if $gal_info.max_desc gt 0}
+								{assign var=desc value=$files[changes].description|truncate:$gal_info.max_desc:"...":false|nl2br}
+							{else}
+								{assign var=desc value=$files[changes].description|nl2br}
+							{/if}
+							{assign var=propval value="$propval<br><span class=\"description\">`$desc`</span>"}
 						{/if}
 					{elseif $propname eq 'created' or $propname eq 'lastModif' or $propname eq 'lastDownload'}
 						{if empty($propval)}
@@ -370,7 +379,7 @@
 					{if $other_columns_selected neq '' and $propname eq $other_columns_selected}
 						{assign var=other_columns_selected_val value=$propval}
 					{else}
-						{if !($galleryId eq 0 and $propname eq 'lockedby') and ($propname neq 'name' or ( $gal_info.show_name eq 'a' or $gal_info.show_name eq 'n' ))}
+						{if !($galleryId eq 0 and $propname eq 'lockedby') and ($propname neq 'name' or ( $gal_info.show_name eq 'a' or $gal_info.show_name eq 'n' )) and ($propname neq 'description' or $gal_info.show_name neq 'n')}
 							<td>{$propval}</td>
 						{/if}
 					{/if}
@@ -382,7 +391,7 @@
 			{/if}
 
 			{if ( $prefs.use_context_menu_icon neq 'y' and $prefs.use_context_menu_text neq 'y' ) or $gal_info.show_action eq 'y' or $prefs.javascript_enabled neq 'y'}
-				<td>{include file='fgal_context_menu.tpl'}</td>
+				<td>{include file='fgal_context_menu.tpl' changes=$smarty.section.changes.index}</td>
 			{/if}
 
 			{if ( $other_columns neq '' or $other_columns_selected neq '' ) and $prefs.javascript_enabled eq 'y'}

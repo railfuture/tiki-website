@@ -1,4 +1,4 @@
-{* $Id: tiki-list_file_gallery.tpl 41028 2012-04-22 12:32:54Z sylvieg $ *}
+{* $Id: tiki-list_file_gallery.tpl 42757 2012-08-25 19:13:48Z jonnybradley $ *}
 
 {title help="File+Galleries" admpage="fgal"}
 	{if $edit_mode eq 'y' and $galleryId eq 0}
@@ -7,17 +7,7 @@
 		{if $edit_mode eq 'y'}
 			{tr}Edit Gallery:{/tr}
 		{/if}
-		{strip} 
-			{if $gal_info.type eq 'user'}
-				{if $gal_info.user eq $user}
-					{tr}My Files{/tr}
-				{else}
-					{tr}Files of {$gal_info.user}{/tr}
-				{/if}
-			{else}
-				{$name}
-			{/if}
-		{/strip}
+		{$name}
 	{/if}
 {/title}
 

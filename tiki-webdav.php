@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-webdav.php 39467 2012-01-12 19:47:28Z changi67 $
+// $Id: tiki-webdav.php 42212 2012-07-04 20:35:14Z changi67 $
 
 
 // If Apache is calling PHP in CGI mode, authentication HTTP Headers are not
@@ -17,6 +17,8 @@
 // The two lines below are used to set PHP_AUTH_USER and PHP_AUTH_PW from
 // HTTP_AUTHORIZATION to allow Basic Authentication in Tiki WebDAV
 
+if(isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION']))
+	$_SERVER['HTTP_AUTHORIZATION'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 	$ha = base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6));
 	list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':', $ha);

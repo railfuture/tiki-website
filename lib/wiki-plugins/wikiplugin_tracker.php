@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: wikiplugin_tracker.php 42058 2012-06-23 19:02:20Z jonnybradley $
+// $Id: wikiplugin_tracker.php 42389 2012-07-16 16:20:01Z jonnybradley $
 
 function wikiplugin_tracker_info()
 {
@@ -1031,16 +1031,38 @@ function wikiplugin_tracker($data, $params)
 			}
 
 			// Display warnings when needed
-			
-			if (count($field_errors['err_mandatory']) > 0) {
-				$smarty->assign_by_ref('err_mandatory', $field_errors['err_mandatory']);
-			}
-			if (count($field_errors['err_value']) > 0) {
-				$smarty->assign_by_ref('err_value', $field_errors['err_value']);
-			}
+
 			if (count($field_errors['err_mandatory']) > 0 || count($field_errors['err_value']) > 0) {
 				$back .= $smarty->fetch('tracker_error.tpl');
 				$_REQUEST['error'] = 'y';
+
+				if (count($field_errors['err_mandatory']) > 0) {
+				$msg = tra('Following mandatory fields are missing');
+					foreach($field_errors['err_mandatory'] as $err) {
+						$msg .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;' . $err['name'];
+					}
+					TikiLib::lib('errorreport')->report($msg);
+				}
+				if (count($field_errors['err_value']) > 0) {
+					$msg = tra('Following fields are incorrect');
+					foreach($field_errors['err_value'] as $err) {
+						$msg .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;' . $err['name'];
+					}
+					TikiLib::lib('errorreport')->report($msg);
+				}
+
+				if ($registration && !empty($userField) && $_REQUEST['name'] === $userField['value'] && $_REQUEST['name'] === $user) {
+					// if in registration and creating a user tracker item for the new user
+					// remove the user if they did not complete the tracker correctly
+					$userlib->remove_user($userField['value']);
+					$user = '';								// needed to re-include the captcha inputs
+					$hidden_fieldId = array();				// remove hidden user fields which are otherwise required
+					foreach($flds['data'] as $k => $v) {	// remove the login field otherwise it gets rendered in the form also required
+						if ($v['fieldId'] == $userField['fieldId']) {
+							unset($flds['data'][$k]);
+						}
+					}
+				}
 			}
 			if (isset($field_errors['err_antibot'])) {
 				$back.= '<div class="simplebox highlight"><img src="img/icons/exclamation.png" alt=" '.tra('Error').'" style="vertical-align:middle" /> ';
@@ -1148,8 +1170,12 @@ function wikiplugin_tracker($data, $params)
 				}
 				$validationjs = $validatorslib->generateTrackerValidateJS($flds['data'], $fields_prefix, $customvalidation, $customvalidation_m);
 
-				$smarty->assign('validationjs', $validationjs);
-				$back .= $smarty->fetch('tracker_validator.tpl');
+				if (!empty($params['_ajax_form_ins_id']) && $params['_ajax_form_ins_id'] === 'group') {
+					$headerlib->add_jq_onready("var ajaxTrackerValidation_group={validation:{" . $validationjs  . '};');		// return clean rules and messages object for ajax
+				} else {
+					$smarty->assign('validationjs', $validationjs);
+					$back .= $smarty->fetch('tracker_validator.tpl');
+				}
 			}
 			if ($params['formtag'] == 'y') {
 				$back .= '<form name="editItemForm' . $iTRACKER . '" id="editItemForm' . $iTRACKER . '" enctype="multipart/form-data" method="post"'.(isset($target)?' target="'.$target.'"':'').' action="'. $_SERVER['REQUEST_URI'] .'"><input type="hidden" name="trackit" value="'.$trackerId.'" />';
@@ -1326,7 +1352,7 @@ FILL;
 			include_once('lib/smarty_tiki/function.trackerheader.php');
 			$back .= smarty_function_trackerheader(array('level'=>-1, 'title'=>'', 'inTable' =>(empty($tpl) && empty($wiki))?'wikiplugin_tracker':'' ), $smarty);
 
-			if ($prefs['feature_antibot'] == 'y' && empty($user) && $formtag != 'n'
+			if ($prefs['feature_antibot'] == 'y' && empty($user) && $params['formtag'] != 'n'
 				&& ($registration != 'y' || $prefs["user_register_prettytracker"] != 'y') ) {
 				// in_tracker session var checking is for tiki-register.php
 				$smarty->assign('showmandatory', $showmandatory);

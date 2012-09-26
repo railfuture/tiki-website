@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: ItemLink.php 41333 2012-05-04 16:39:24Z lphuberdeau $
+// $Id: ItemLink.php 42315 2012-07-09 20:32:18Z lphuberdeau $
 
 /**
  * Handler class for ItemLink
@@ -331,12 +331,13 @@ $("select[name=' . $this->getInsertId() . ']").change(function(e, val) {
 		$indexRemote = array_filter(explode('|', $this->getOption('indexRemote')));
 
 		if (count($indexRemote)) {
-			$definition = Tracker_Definition::get($trackerId);
-			foreach ($indexRemote as $fieldId) {
-				$field = $definition->getField($fieldId);
-				$permName = $field['permName'];
+			if ($definition = Tracker_Definition::get($trackerId)) {
+				foreach ($indexRemote as $fieldId) {
+					$field = $definition->getField($fieldId);
+					$permName = $field['permName'];
 
-				$fields[] = "{$baseKey}_{$permName}";
+					$fields[] = "{$baseKey}_{$permName}";
+				}
 			}
 		}
 

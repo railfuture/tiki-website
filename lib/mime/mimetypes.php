@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: mimetypes.php 41745 2012-06-04 13:54:13Z robertplummer $
+// $Id: mimetypes.php 42542 2012-08-06 18:48:41Z lphuberdeau $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -117,7 +117,6 @@ $mimetypes = array(
 	"dms" => "application/x-dms",
 	"doc" => "application/msword",
 	"dot" => "application/msword",
-	"dotx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
 	"d" => "text/x-dsrc",
 	"dvi" => "application/x-dvi",
 	"dv" => "video/dv",
@@ -477,4 +476,15 @@ $mimetypes = array(
 	"xyz" => "chemical/x-xyz",
 	"zip" => "application/zip",
 	"zmt" => "chemical/x-mopac-input",
+
+	"xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+	"xltx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+	"potx" => "application/vnd.openxmlformats-officedocument.presentationml.template",
+	"ppsx" => "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+	"pptx" => "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+	"sldx" => "application/vnd.openxmlformats-officedocument.presentationml.slide",
+	"docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+	"dotx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+	"xlam" => "application/vnd.ms-excel.addin.macroEnabled.12",
+	"xlsb" => "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
 );

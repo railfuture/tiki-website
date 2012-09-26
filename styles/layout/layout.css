@@ -1,4 +1,4 @@
-/* $Id: layout.css 42099 2012-06-26 14:54:27Z xavidp $
+/* $Id: layout.css 42233 2012-07-05 18:00:51Z jonnybradley $
 /*	This file (layout.css) is to be imported by theme stylesheets. */
 	
 
@@ -471,6 +471,11 @@ li#logout_link a {
 .error .rbox-data .adminoption,
 .error .rbox-data .adminoptionlabel {
 	display: inline;
+}
+
+.error.icon {
+	font-weight: bold;
+	color: #090;
 }
 
 /** off-screen **/
@@ -1684,7 +1689,7 @@ when module used without decorations. */
 	padding-right: 2px;
 }
 
-opaque .box-title,
+.opaque .box-title,
 .opaque .box-data {
 	width: auto;
 }
