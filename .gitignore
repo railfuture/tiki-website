@@ -9,3 +9,5 @@ error_log*
 /db/lock
 /non-tiki/
 /file_gallery/
+/css/railfuture-non-tiki.css
+/css/railfuture-tiki-like.css
