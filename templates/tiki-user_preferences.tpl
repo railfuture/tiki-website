@@ -1,4 +1,4 @@
-{* $Id: tiki-user_preferences.tpl 40803 2012-04-07 14:25:49Z Jyhem $ *}
+{* $Id: tiki-user_preferences.tpl 42282 2012-07-09 03:06:07Z marclaporte $ *}
 
 {if $userwatch ne $user}
   {title help="User+Preferences"}{tr}User Preferences:{/tr} {$userwatch}{/title}
@@ -14,6 +14,7 @@
 	<div class="navbar">
 		{assign var=thisuser value=$userinfo.login}
 		{button href="tiki-assignuser.php?assign_user=$thisuser" _text="{tr}Assign Group{/tr}"}
+		{button href="tiki-user_information.php?view_user=$thisuser" _text="{tr}User Information{/tr}"}
 	</div>
 {/if}
 

@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: function.html_select_date.php 42060 2012-06-24 15:01:32Z jonnybradley $
+// $Id: function.html_select_date.php 42163 2012-06-28 20:17:57Z changi67 $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -305,7 +305,7 @@ function smarty_function_html_select_date($params, $smarty)
 			}
 			$year_result .= ' />';
 		} else {
-			$years = range(max((int)$start_year, 1970), (int)$end_year);
+			$years = range((int)$start_year, (int)$end_year);
 			if ($reverse_years) {
 				rsort($years, SORT_NUMERIC);
 			} else {

@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: include_login.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: include_login.php 42358 2012-07-12 16:11:06Z jonnybradley $
 
 // This script may only be included - so its better to die if called directly.
 if (strpos($_SERVER['SCRIPT_NAME'], basename(__FILE__)) !== false) {
@@ -35,6 +35,6 @@ if (!empty($_REQUEST['refresh_email_group'])) {
 
 $smarty->assign('gd_lib_found', function_exists('gd_info') ? 'y' : 'n');
 
-$listgroups = $userlib->get_groups(0, -1, 'groupName_desc', '', '', 'n');
+$listgroups = $userlib->get_groups(0, -1, 'groupName_asc', '', '', 'n');
 $smarty->assign("listgroups", $listgroups['data']);
 ask_ticket('admin-inc-login');

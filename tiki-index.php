@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-index.php 41498 2012-05-19 14:52:12Z nkoth $
+// $Id: tiki-index.php 42702 2012-08-23 16:51:43Z Jyhem $
 
 $inputConfiguration = array(
 				array(
@@ -51,6 +51,7 @@ $auto_query_args = array(
 				'no_bl',
 				'page_id',
 				'pagenum',
+				'fullscreen',
 				'page_ref_id',
 				'mode',
 				'sort_mode',
@@ -178,6 +179,14 @@ if (!empty($page_ref_id)) {
 
 $page = $_REQUEST['page'];
 $smarty->assign_by_ref('page', $page);
+
+#Propagate the fullscreen parameter to templates
+if ( isset($_REQUEST['fullscreen']) ) {
+	$fullscreen = $_REQUEST['fullscreen'];
+}else{
+	$fullscreen = 'n';
+}
+$smarty->assign('fullscreen', $fullscreen);
 
 if ( function_exists('utf8_encode') ) {
 	$pagename_utf8 = utf8_encode($page);

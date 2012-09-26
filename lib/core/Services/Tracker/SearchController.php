@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: SearchController.php 41468 2012-05-15 17:09:23Z nkoth $
+// $Id: SearchController.php 42385 2012-07-16 13:04:22Z nkoth $
 
 // Controller to process requests from the custom search plugin using the list plugin to display results
 // Refactored from customsearch_ajax.php for Tiki
@@ -287,6 +287,8 @@ class Services_Tracker_SearchController
 		if ($config['type'] != 'text') {
 			if (!empty($config['_value'])) {
 				$value = $config['_value'];
+				return '{filter type="' . $value . '"}';
+			} elseif ($value) {
 				return '{filter type="' . $value . '"}';
 			} else {
 				return false;

@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: function.icon.php 40257 2012-03-20 13:52:08Z jonnybradley $
+// $Id: function.icon.php 42149 2012-06-28 12:29:12Z jonnybradley $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -207,9 +207,7 @@ function smarty_function_icon($params, $smarty)
 					try {
 						$html = smarty_function_html_image($params, $smarty);
 					} catch (Exception $e) {
-						$params['file'] = 'img/icons/green_question.png';
-						$params['title'] = tra('Error:') . ' ' . $e->getMessage();
-						$html = smarty_function_html_image($params, $smarty);
+						$html = '<span class="icon error" title="' . tra('Error:') . ' ' . $e->getMessage() . '">?</span>';
 					}
 			}
 

@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: Item.php 41793 2012-06-05 17:01:54Z lphuberdeau $
+// $Id: Item.php 42304 2012-07-09 18:25:50Z lphuberdeau $
 
 class Tracker_Item
 {
@@ -13,6 +13,15 @@ class Tracker_Item
 	private $owner;
 	private $ownerGroup;
 	private $perms;
+
+	public static function fromId($itemId)
+	{
+		$info = TikiLib::lib('trk')->get_tracker_item($itemId);
+
+		if ($info) {
+			return self::fromInfo($info);
+		}
+	}
 
 	public static function fromInfo($info)
 	{
@@ -322,6 +331,11 @@ class Tracker_Item
 	public function getPerm($permName)
 	{
 		return isset($this->perms->$permName) ? $this->perms->$permName : null;
+	}
+
+	public function getPerms()
+	{
+		return $this->perms;
 	}
 }
 

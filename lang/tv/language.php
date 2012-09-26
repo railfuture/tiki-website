@@ -68,7 +68,6 @@ $lang = array(
 "show publish date" => "Fakaasi te aso ne faite iei",
 "Trash" => "Kaiga",
 "View Results" => "Onoono ki Results",
-"Your email could not be validated; make sure you email is correct and click register below." => "E se talia tau e-mail; onoono o toe fakataonu ko ko toko ei register mai lalo.",
 "remove" => "tapale",
 "Show All" => "Fakaasi katoa",
 "Message sent to" => "Fekau ne ave kia",

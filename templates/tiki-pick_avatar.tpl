@@ -1,4 +1,4 @@
-{* $Id: tiki-pick_avatar.tpl 36925 2011-09-04 22:33:49Z chealer $ *}
+{* $Id: tiki-pick_avatar.tpl 42367 2012-07-12 20:52:55Z changi67 $ *}
 
 {title}
   {if $user ne $userwatch}
@@ -25,7 +25,7 @@
 </div>
 {if isset($user_picture_id)}
 <div>{tr}Full size{/tr}<br />
-<img src="tiki-download_file.php?fileId={$user_picture_id|escape}&amp;display=y"></img>
+<img src="tiki-download_file.php?fileId={$user_picture_id|escape}&amp;display=y"/>
 </div>
 {/if}
 {else}{tr}no avatar{/tr}{/if}

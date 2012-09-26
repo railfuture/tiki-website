@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: Controller.php 40032 2012-03-04 18:17:02Z changi67 $
+// $Id: Controller.php 42204 2012-07-03 19:16:16Z robertplummer $
 
 class Services_Draw_Controller
 {
@@ -34,6 +34,12 @@ class Services_Draw_Controller
 	function action_replace($input)
 	{
 		//just a dummy for now, filegallery handles it all
+	}
+
+	function action_removeButtons()
+	{
+		global $prefs;
+		return array('removeButtons' => $prefs['feature_draw_hide_buttons']);
 	}
 }
 

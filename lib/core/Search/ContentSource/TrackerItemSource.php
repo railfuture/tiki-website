@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: TrackerItemSource.php 40234 2012-03-17 19:17:41Z changi67 $
+// $Id: TrackerItemSource.php 42316 2012-07-09 20:38:36Z lphuberdeau $
 
 class Search_ContentSource_TrackerItemSource implements Search_ContentSource_Interface
 {
@@ -75,6 +75,12 @@ class Search_ContentSource_TrackerItemSource implements Search_ContentSource_Int
 
 	function getProvidedFields()
 	{
+		static $data;
+
+		if (is_array($data)) {
+			return $data;
+		}
+
 		$data = array(
 			'title',
 			'language',
@@ -98,6 +104,12 @@ class Search_ContentSource_TrackerItemSource implements Search_ContentSource_Int
 
 	function getGlobalFields()
 	{
+		static $data;
+
+		if (is_array($data)) {
+			return $data;
+		}
+
 		$data = array();
 
 		foreach ($this->getAllIndexableHandlers() as $baseKey => $handler) {

@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: menulib.php 40373 2012-03-25 16:35:39Z jonnybradley $
+// $Id: menulib.php 42402 2012-07-17 19:23:36Z nkoth $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -245,6 +245,12 @@ class MenuLib extends TikiLib
 	{
 		$query = "update `tiki_menu_options` set `url`=? where `url`=?";
 		$result = $this->query($query, array('(('.$newName.'))', '(('.$oldName.'))'));
+		$query = "select `menuId` from `tiki_menu_options` where `url`=?";
+		$result = $this->fetchAll($query, array('(('.$newName.'))'));
+		foreach ($result as $p) {
+			$this->empty_menu_cache($p['menuId']);
+		}
+
 		// try to change some tiki-index.php?page - very limitted: for another http://anothersite/tiki-index.php?page= must not be changed
 		$query = "select * from `tiki_menu_options` where `url` like ?";
 		$result = $this->query($query, array("%tiki-index.php?page=$oldName%"));
@@ -289,10 +295,12 @@ class MenuLib extends TikiLib
 			$homePage = $wikilib->get_default_wiki_page();
 			$option['url'] .= "?page=$homePage";
 		}
+		$pos = false;
 		if ($prefs['feature_sefurl'] == 'y' && !empty($option['sefurl'])) {
 			$pos = strpos($url, '/'. str_replace('&amp;', '&', urldecode($option['sefurl']))); // position in $url
 			$lg = 1 + strlen($option['sefurl']);
-		} else {
+		}
+		if ($pos === false) {
 			$pos = strpos(strtolower($url), strtolower($option['url']));
 			$lg = strlen($option['url']);
 		}
@@ -339,9 +347,10 @@ class MenuLib extends TikiLib
 			}
 			$channels = array('data'=>$this->lower($subMenu), 'cant'=>$cant);
 		}
+		$selecteds = array();
+		$optionLevel = 0;
 		if (is_numeric($sectionLevel)) { // must extract only the submenu level sectionLevel where the current url is
 			$findUrl = false;
-			$optionLevel = 0;
 			$cant = 0;
 			foreach ($channels['data'] as $position=>$option) {
 				if (is_numeric($option['type'])) {
@@ -365,6 +374,10 @@ class MenuLib extends TikiLib
 				if ($optionLevel >= $sectionLevel) {
 					$subMenu[] = $option;
 					++$cant;
+					if (empty($selectedPosition) && $option['type'] != 'o' && $option['type'] != '-') {
+						// not pretty but works - optionLevel will get "shifted up" by $sectionLevel later in lower()
+						$selecteds[$optionLevel - $sectionLevel] = $cant - 1;
+					}
 					if (!empty($option['url']) && $this->menuOptionMatchesUrl($option)) {
 						$findUrl = true;
 						$selectedPosition = $cant - 1;
@@ -383,8 +396,6 @@ class MenuLib extends TikiLib
 				$channels['cant'] = 0;
 			}
 		} else {
-			$selecteds = array();
-			$optionLevel = 0;
 			foreach ($channels['data'] as $position=>$option) {
 				if (is_numeric($option['type'])) {
 					$optionLevel = $option['type'];
@@ -404,14 +415,14 @@ class MenuLib extends TikiLib
 					++$optionLevel;
 				}
 			}
-			if (isset($selectedPosition)) {
-				for ($o = 0; $o < $optionLevel; ++$o) {
-					$channels['data'][$selecteds[$o]]['selectedAscendant'] = true;
-				}
-			}
 		}
 		if (isset($selectedPosition)) {
 			$channels['data'][$selectedPosition]['selected'] = true;
+			for ($o = 0; $o < $optionLevel; ++$o) {
+				if ($o !== $selectedPosition) {
+					$channels['data'][$selecteds[$o]]['selectedAscendant'] = true;
+				}
+			}
 		}
 		if (is_numeric($toLevel)) {
 			$subMenu = array();
@@ -435,7 +446,7 @@ class MenuLib extends TikiLib
 			$channels = array('data'=>$subMenu, 'cant'=>$cant);
 		}
 		// set sections open/close according to cookie
-			global $prefs;
+		global $prefs;
 		foreach ($channels['data'] as $position => &$option) {
 			$option['open'] = false;
 			if (!empty($params['menu_cookie']) && $params['menu_cookie'] == 'n') {
@@ -461,6 +472,9 @@ class MenuLib extends TikiLib
 					$lower = $option['type'];
 				}
 				$subMenu[$i]['type'] -= $lower;
+				if ($subMenu[$i]['type'] == 0) {
+					$subMenu[$i]['type'] = 's';		// section levels go: s, 1, 2, 3 etc
+				}
 			}
 		}
 		return $subMenu;
@@ -568,6 +582,7 @@ class MenuLib extends TikiLib
 	{
 		global $user, $tiki_p_admin, $prefs;
 		$wikilib = TikiLib::lib('wiki');
+		include_once('tiki-sefurl.php');
 
 		$options = $this->table('tiki_menu_options');
 		$conditions = array(
@@ -596,7 +611,7 @@ class MenuLib extends TikiLib
 					continue;
 				}
 			} else {
-				$res['sefurl'] = '';
+				$res['sefurl'] = filter_out_sefurl($res['url']);
 			}
 			if (!$full) {
 				$display = true;

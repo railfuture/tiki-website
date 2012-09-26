@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: modifier.iconify.php 40030 2012-03-04 12:55:30Z gezzzan $
+// $Id: modifier.iconify.php 42414 2012-07-18 16:13:22Z jonnybradley $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -25,8 +25,26 @@ function smarty_modifier_iconify($string, $filetype = null)
 	global $smarty;
 
 	$smarty->loadPlugin('smarty_function_icon');
+	$icon = '';
 	$ext = strtolower(substr($string, strrpos($string, '.') + 1));
-	$icon = file_exists("img/icons/mime/$ext.png") ? $ext : 'default';
+	if (file_exists("img/icons/mime/$ext.png")) {
+		$icon = $ext;
+	} else 	if (file_exists('img/icons/mime/' . substr($ext, 0, 3) . '.png')) {
+		$icon = substr($ext, 0, 3);
+	} else {
+		include_once ('lib/mime/mimetypes.php');
+		global $mimetypes;
+
+		$mimes = array_keys($mimetypes, $filetype);
+		foreach($mimes as $m) {
+			if (file_exists("img/icons/mime/$m.png")) {
+				$icon = $m;
+			}
+		}
+		if (empty($icon)) {
+			$icon = 'default';
+		}
+	}
 
 	return smarty_function_icon(
 					array(

@@ -1,11 +1,13 @@
-{* $Id: tiki-admin_menu_options.tpl 40408 2012-03-26 10:03:05Z jonnybradley $ *}
+{* $Id: tiki-admin_menu_options.tpl 42238 2012-07-05 19:19:39Z jonnybradley $ *}
 {title help="Menus" url="tiki-admin_menu_options.php?menuId=$menuId" admpage="general&amp;cookietab=3"}{tr}Admin Menu:{/tr} {$editable_menu_info.name}{/title}
 
 <div class="navbar">
 	{button href="tiki-admin_menus.php" _text="{tr}List menus{/tr}"}
 	{button href="tiki-admin_menus.php?menuId=$menuId&cookietab=2" _text="{tr}Edit this menu{/tr}"}
-	{button href="#export" _text="{tr}Export{/tr}"}
-	{button href="#import" _text="{tr}Import{/tr}"}
+	{if $prefs.feature_tabs neq 'y'}
+		{button href="#export" _text="{tr}Export{/tr}"}
+		{button href="#import" _text="{tr}Import{/tr}"}
+	{/if}
 </div>
 
 {tabset name="admin_menu_options"}

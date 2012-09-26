@@ -5,8 +5,8 @@
 		{foreach item=gr from=$listgroups}
 			{if $gr.registrationChoice eq 'y'}
 				<div class="registergroup">
-					<input type="radio" name="chosenGroup" id="gr_{$gr.groupName}" value="{$gr.groupName|escape}" /> 
-					<label for="gr_{$gr.groupName}">
+					<input type="radio" name="chosenGroup" id="gr_{$gr.id}" value="{$gr.groupName|escape}" />
+					<label for="gr_{$gr.id}">
 						{if $gr.groupDesc}
 							{tr}{$gr.groupDesc|escape}{/tr}
 						{else}
@@ -19,26 +19,24 @@
 	{/if}
 {else}
 	{* Groups *}
-	{jq}
-	$("input[name='chosenGroup']").change(function() {
-		var gr = $("input[name='chosenGroup']:checked").val();
-		$.getJSON('group_tracker_ajax.php',{chosenGroup:gr}, function(data) {
-		//console.debug(data);
-		$("#registerTracker").html(data['res']);
-		});
-	});
-	{/jq}
 	{if isset($theChoiceGroup)}
 		<input type="hidden" name="chosenGroup" value="{$theChoiceGroup|escape}" />
+		{jq}
+$.getJSON('group_tracker_ajax.php', {chosenGroup:'{{$theChoiceGroup}}'}, function(data) {
+	$("#registerTracker").html(data['res']).modal();
+});
+		{/jq}
+		<tr><td colspan="2"><div id="registerTracker"></div></td></tr>
 	{elseif isset($listgroups)}
 		<tr>
-			<td>{tr}Group{/tr}</td>
+			<td>{tr}Group{/tr}{if $prefs.user_must_choose_group eq 'y'}{if $trackerEditFormId}&nbsp;<strong class='mandatory_star'>*</strong>&nbsp;{/if}{/if}</td>
 			<td>
 				{foreach item=gr from=$listgroups}
 					{if $gr.registrationChoice eq 'y'}
 						<div class="registergroup">
-							<input type="radio" name="chosenGroup" id="gr_{$gr.groupName}" value="{$gr.groupName|escape}" />
-							<label for="gr_{$gr.groupName}">
+							<input type="radio" name="chosenGroup" id="gr_{$gr.id}" value="{$gr.groupName|escape}"
+									{if !empty($smarty.post.chosenGroup) and $smarty.post.chosenGroup eq $gr.groupName|escape}checked="checked"{/if} />
+							<label for="gr_{$gr.id}">
 								{if $gr.groupDesc}
 									{tr}{$gr.groupDesc|escape}{/tr}
 								{else}
@@ -50,6 +48,30 @@
 				{/foreach}
 			</td>
 		</tr>
-		<tr><td colspan="2"><div id="registerTracker"></div></td></tr>
+		<tr><td colspan="2"><div id="registerTracker"><em class='mandatory_note'>{if $trackerEditFormId}{tr}Fields marked with a * are mandatory.{/tr}{/if}</em></div></td></tr>
+		{jq}
+$("input[name='chosenGroup']").change(function() {
+	$("#registerTracker").modal("{tr}Loading...{/tr}");
+	var gr = $("input[name='chosenGroup']:checked").val();
+	$.getJSON('group_tracker_ajax.php',{chosenGroup:gr}, function(data) {
+		if ($("#registerTracker").children().length === 0) {
+			$(".trackerplugindesc").parents("tr").remove();
+		}
+		$("#registerTracker").html(data['res']).modal();
+		$("input[name^=captcha]").parents("tr").show();
+		$("input[name=register]").prop("disabled", false);
+		if (data['validation']) {
+			var $v = $("#registerTracker").parents('form').validate();
+			$.extend( true, $v.settings, data['validation'] );
+		}
+		$("#registerTracker").parents("table:first").css({borderSpacing:"0 !important",borderCollapse:"collapse !important"});
+		$("tr td:first", "#registerTracker").width($("#registerTracker").parents('table:first').find("td:first").width());
+	});
+}){{if !empty($smarty.post.chosenGroup)}}.change(){{/if}};
+{{if $prefs.user_must_choose_group eq 'y'}
+$("input[name^=captcha]").parents("tr").hide();
+$("input[name=register]").prop("disabled", true);
+{/if}}
+		{/jq}
 	{/if}
 {/if}

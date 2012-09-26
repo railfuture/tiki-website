@@ -1,4 +1,4 @@
-{* $Id: tiki-upload_file.tpl 40295 2012-03-22 13:50:06Z arildb $ *}
+{* $Id: tiki-upload_file.tpl 42751 2012-08-25 17:53:09Z jonnybradley $ *}
 
 {if !empty($filegals_manager) and !isset($smarty.request.simpleMode)}
 	{assign var=simpleMode value='y'}
@@ -226,7 +226,9 @@
 								<label for="galleryId">{tr}File gallery:{/tr}</label>
 							</td><td width="80%">
 								<select id="galleryId" name="galleryId[]">
-									<option value="{$treeRootId}" {if $treeRootId eq $galleryId}selected="selected"{/if} style="font-style:italic; border-bottom:1px dashed #666;">{tr}Root{/tr}</option>
+									{if $gal_info.type neq 'user'}
+										<option value="{$treeRootId}" {if $treeRootId eq $galleryId}selected="selected"{/if} style="font-style:italic; border-bottom:1px dashed #666;">{tr}Root{/tr}</option>
+									{/if}
 									{section name=idx loop=$galleries}
 										{if $galleries[idx].id neq $treeRootId and $galleries[idx].perms.tiki_p_upload_files eq 'y'}
 											<option value="{$galleries[idx].id|escape}" {if $galleries[idx].id eq $galleryId}selected="selected"{/if}>{$galleries[idx].name|escape}</option>
@@ -244,12 +246,12 @@
 					</td><td width="80%">
 						{user_selector id='user' name='user[]' select=$fileInfo.user editable=$tiki_p_admin_file_galleries}
 					</td></tr>
-	
 					{if $prefs.feature_file_galleries_author eq 'y'}
 						<tr><td>
-							<label for="author">{tr}Creator of file, if different from the 'Uploaded by' user:{/tr}</label>
+							<label for="author">{tr}Creator{/tr}</label>
 						</td><td width="80%">
-							<input type="text" id="author"name="author[]" value="{$fileInfo.author|escape}" />
+							<input type="text" id="author"name="author[]" value="{$fileInfo.author|escape}" /><br>
+							<span class="description">{tr}Creator of file, if different from the 'Uploaded by' user{/tr}</span>
 						</td></tr>
 					{/if}
 					{if !empty($groupforalert)}
@@ -268,6 +270,17 @@
 						{if $showeachuser eq 'y'}
 							</td></tr>
 						{/if}
+					{/if}
+					{if $editFileId}
+						<tr><td>
+							<label for "filetype">File Type:</label>
+						</td><td width="80%">
+							<select id="filetype" name="filetype[]">
+								{foreach $mimetypes as $type}
+									<option value="{$type}"{if $fileInfo.filetype eq $type} selected="selected"{/if}>{$type|truncate:60} (*.{$type@key})</option>
+								{/foreach}
+							</select>
+						</td></tr>
 					{/if}
 				</table>
 			</div>

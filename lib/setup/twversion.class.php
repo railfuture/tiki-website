@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: twversion.class.php 42121 2012-06-26 20:26:59Z changi67 $
+// $Id: twversion.class.php 42769 2012-08-27 10:29:48Z changi67 $
 
 // Should generally be instantiated from tiki-setup.php
 
@@ -27,7 +27,7 @@ class TWVersion
 		$this->branch 	= 'stable';
 
 		// Set everything else, including defaults.
-		$this->version 	= '9.0';	// needs to have no spaces for releases
+		$this->version 	= '9.1';	// needs to have no spaces for releases
 		$this->star	= 'Herbig Haro';
 		$this->releases	= array();
 
@@ -166,10 +166,13 @@ class TWVersion
 				'8.1',
 				'8.2',
 				'8.3',
+				'8.4',
+				'8.5',
 				'9.0alpha',
 				'9.0beta',
 				'9.0beta2',
 				'9.0',
+				'9.1',
 			);
 	}
 

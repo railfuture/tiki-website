@@ -1,8 +1,14 @@
-{* $Id: include_search.tpl 42072 2012-06-24 20:21:12Z marclaporte $ *}
+{* $Id: include_search.tpl 42320 2012-07-10 02:15:50Z marclaporte $ *}
 
 {if $prefs.feature_search_stats eq 'y'}
 	{remarksbox type="tip" title="{tr}Tip{/tr}"}
 		{tr}Search stats{/tr} {tr}can be seen on page{/tr} <a class='rbox-link' target='tikihelp' href='tiki-search_stats.php'>{tr}Search stats{/tr}</a> {tr}in Admin menu{/tr}
+	{/remarksbox}
+{/if}
+
+{if $prefs.feature_file_galleries eq 'y'}
+	{remarksbox type="tip" title="{tr}Tip{/tr}"}
+		{tr}Also see the Search Indexing tab here:{/tr} <a class='rbox-link' target='tikihelp' href='tiki-admin.php?page=fgal'>{tr}File Gallery admin panel{/tr}</a>
 	{/remarksbox}
 {/if}
 
@@ -35,6 +41,7 @@
 							{preference name="unified_lucene_max_buffered_docs"}
 							{preference name="unified_lucene_max_merge_docs"}
 							{preference name="unified_lucene_merge_factor"}
+							{preference name="unified_lucene_default_operator"}
 						</fieldset>
 					</div>
 
@@ -117,12 +124,25 @@ $("#log-rebuild").click(function(){
 				{preference name=search_autocomplete}
 			</fieldset>
 
+			<fieldset>
+				<legend>{tr}Forum searches{/tr}</legend>
+				{preference name=feature_forums_name_search}
+				{preference name=feature_forums_search}
+				{preference name=feature_forum_content_search}
+				<div class="adminoptionboxchild" id="feature_forum_content_search_childcontainer">
+					{preference name=feature_forum_local_tiki_search}
+					{preference name=feature_forum_local_search}
+				</div>
+			</fieldset>
+
 		{/tab}
 
 		{tab name="{tr}Search Results{/tr}"}
+			{tr}Select the items to display on the search results page:{/tr}
 			{preference name=search_default_interface_language}
 			{preference name=search_default_where}
-			{tr}Select the items to display on the search results page:{/tr}
+			{preference name=search_show_category_filter}
+			{preference name=search_show_tag_filter}
 			{preference name=feature_search_show_object_filter}
 			{preference name=feature_search_show_search_box}
 			{tr}Select the information to display for each result:{/tr}

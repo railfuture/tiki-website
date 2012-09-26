@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: wikiplugin_appframe.php 41740 2012-06-04 12:33:41Z lphuberdeau $
+// $Id: wikiplugin_appframe.php 42712 2012-08-24 13:11:27Z lphuberdeau $
 
 function wikiplugin_appframe_info()
 {
@@ -248,6 +248,12 @@ function wikiplugin_appframe_page($data, $params, $start)
 	$info = $tikilib->get_page_info($params->name->pagename());
 
 	if (! $info) {
+		return null;
+	}
+
+	$perms = Perms::get('wiki page', $info['pageName']);
+
+	if (! $perms->view) {
 		return null;
 	}
 

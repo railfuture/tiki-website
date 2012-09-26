@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-list_file_gallery.php 42048 2012-06-23 05:14:02Z marclaporte $
+// $Id: tiki-list_file_gallery.php 42725 2012-08-25 13:00:35Z jonnybradley $
 
 $section = 'file_galleries';
 require_once ('tiki-setup.php');
@@ -86,6 +86,14 @@ $galleryId = $_REQUEST['galleryId'];
 if (($galleryId != 0 || $tiki_p_list_file_galleries != 'y') && ($galleryId == 0 || $tiki_p_view_file_gallery != 'y')) {
 	$smarty->assign('errortype', 401);
 	$smarty->assign('msg', tra('You do not have permission to view this section'));
+	$smarty->display('error.tpl');
+	die;
+}
+if ($prefs['feature_use_fgal_for_user_files'] === 'y' && $gal_info['type'] === 'user' &&
+		$gal_info['visible'] !== 'y' && $gal_info['user'] !== $user && $tiki_p_admin_file_galleries !== 'y') {
+
+	$smarty->assign('errortype', 401);
+	$smarty->assign('msg', tra('You do not have permission to view this gallery'));
 	$smarty->display('error.tpl');
 	die;
 }
@@ -933,7 +941,11 @@ if ($prefs['fgal_show_explorer'] == 'y' || $prefs['fgal_show_path'] == 'y' || is
 		$path = $filegallib->getPath($galleryId);
 		$smarty->assign('gallery_path', $path['HTML']);
 	}
-	$smarty->assign('tree', $filegallib->getTreeHTML($galleryId));
+	if ($prefs['feature_use_fgal_for_user_files'] == 'y' && $gal_info['type'] === 'user') {	// get tree from root of user galleries always
+		$smarty->assign('tree', $filegallib->getTreeHTML($prefs['fgal_root_user_id']));		// for user galleries
+	} else {
+		$smarty->assign('tree', $filegallib->getTreeHTML($galleryId));
+	}
 }
 
 ask_ticket('fgal');

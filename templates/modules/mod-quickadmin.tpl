@@ -1,4 +1,4 @@
-{* $Id: mod-quickadmin.tpl 38539 2011-10-28 19:15:50Z sampaioprimo $ *}
+{* $Id: mod-quickadmin.tpl 42716 2012-08-24 15:51:34Z xavidp $ *}
 
 {tikimodule error=$module_params.error title=$tpl_module_title name="quickadmin" flip=$module_params.flip decorations=$module_params.decorations nobox=$module_params.nobox notitle=$module_params.notitle}
 	{if $tiki_p_admin == "y"}
@@ -23,9 +23,13 @@
 				{icon _id=comments title="{tr}Comments Moderation{/tr}" href="tiki-list_comments.php"}
 			{/if}
 			{icon _id=database_refresh title="{tr}Clear all Tiki caches{/tr}" href="tiki-admin_system.php?do=all"}
-			{icon _id=plugin title="{tr}Plugin Approval{/tr}" href="tiki-plugins.php"}
+            {icon _id=table_refresh title="{tr}Rebuild Search index{/tr}" href="tiki-admin.php?page=search&amp;rebuild=now"}
+            {icon _id=plugin title="{tr}Plugin Approval{/tr}" href="tiki-plugins.php"}
 			{icon _id=book title="{tr}SysLogs{/tr}" href="tiki-syslog.php"}
 			{icon _id=module title="{tr}Modules{/tr}" href="tiki-admin_modules.php"}
-		</div>  
+			{if $prefs.feature_debug_console}
+				{icon _id=bug title="{tr}Open Smarty debug window{/tr}" href="{query _type='relative' show_smarty_debug=1}"}
+			{/if}
+		</div>
 	{/if}
 {/tikimodule}

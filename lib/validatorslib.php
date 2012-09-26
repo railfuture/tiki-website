@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: validatorslib.php 40094 2012-03-09 06:44:26Z pkdille $
+// $Id: validatorslib.php 42571 2012-08-13 21:08:55Z luciash $
 
 class Validators
 {
@@ -87,6 +87,8 @@ class Validators
 					$validationjs .= 'input: function() { ';
 					if ( $prefix == 'ins_' && $field_value['type'] == 'a') {
 						$validationjs .= 'return $("#area_'.$field_value['fieldId'].'").val(); ';
+					} elseif ( $prefix == 'ins_' && $field_value['type'] == 'k') {
+						$validationjs .= 'return $("#page_selector_'.$field_value['fieldId'].'").val(); ';
 					} else {
 						$validationjs .= 'return $("#'.$prefix.$field_value['fieldId'].'").val(); ';
 					}

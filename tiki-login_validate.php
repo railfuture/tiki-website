@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-login_validate.php 39467 2012-01-12 19:47:28Z changi67 $
+// $Id: tiki-login_validate.php 42518 2012-08-02 16:42:21Z jonnybradley $
 $inputConfiguration = array(
 	array( 'staticKeyFilters' => array(
 		'user' => 'text',
@@ -24,7 +24,7 @@ if (isset($_REQUEST["user"])) {
 			die;
 		} elseif (!empty($_SESSION['last_validation'])) {
 			if ($_SESSION['last_validation']['actpass'] == $_REQUEST["pass"] && $_SESSION['last_validation']['user'] == $_REQUEST["user"]) {
-				list($isvalid, $_REQUEST["user"], $error) = $userlib->validate_user($_REQUEST["user"], $_SESSION['last_validation']['pass'], '', '', true);
+				list($isvalid, $_REQUEST["user"], $error) = $userlib->validate_user($_REQUEST["user"], $_SESSION['last_validation']['actpass'], '', '', true);
 			} else {
 				$_SESSION['last_validation'] = null;
 			}
@@ -43,10 +43,12 @@ if (isset($_REQUEST["user"])) {
 // disallow robots to index page:
 $smarty->assign('metatag_robots', 'NOINDEX, NOFOLLOW');
 if ($isvalid) {
+	$wasAdminValidation = false;
 	$info = $userlib->get_user_info($_REQUEST['user']);
 	if ($info['waiting'] == 'a' && $prefs['validateUsers'] == 'y') { // admin validating -> need user email validation now
 		$userlib->send_validation_email($_REQUEST['user'], $info['valid'], $info['email'], '', 'y');
 		$userlib->change_user_waiting($_REQUEST['user'], 'u');
+		$wasAdminValidation = true;
 		$logslib->add_log('register', 'admin validation ' . $_REQUEST['user']);
 	} elseif ($info['waiting'] == 'a' && $prefs['validateRegistration'] == 'y') { //admin validating -> user can log in
 		$userlib->confirm_user($_REQUEST['user']);
@@ -82,7 +84,7 @@ if ($isvalid) {
 			$_SESSION["$user_cookie_site"] = $user;
 		}
 	}
-	if (!empty($prefs['url_after_validation'])) {
+	if (!empty($prefs['url_after_validation']) && !$wasAdminValidation) {
 		header('Location: '.$prefs['url_after_validation']);
 	} else {
 		$smarty->assign('msg', tra("Account validated successfully."));
@@ -95,6 +97,7 @@ if ($isvalid) {
 	else if ($error == USER_NOT_FOUND) $error = tra("Invalid username");
 	else if ($error == ACCOUNT_DISABLED) $error = tra("Account disabled");
 	else if ($error == USER_AMBIGOUS) $error = tra("You must use the right case for your user name");
+	else if ($error == USER_PREVIOUSLY_VALIDATED) $error = tra('You have already validated your account. Please log in.');
 	else $error = tra('Invalid username or password');
 	$smarty->assign('errortype', 'no_redirect_login');
 	$smarty->assign('msg', $error);

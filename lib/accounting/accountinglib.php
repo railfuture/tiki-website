@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: accountinglib.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: accountinglib.php 42728 2012-08-25 13:19:59Z xavidp $
 
 // this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -374,7 +374,7 @@ class AccountingLib extends LogsLib
 
 		if (count($errors) != 0) return $errors;
 
-		$query = 'INSERT INTO tiki_acct_accounti' . 
+		$query = 'INSERT INTO tiki_acct_account' . 
 						' SET accountBookId=?, accountId=?, accountName=?,' . 
 						' accountNotes=?, accountBudget=?, accountLocked=?, accountTax=?';
 

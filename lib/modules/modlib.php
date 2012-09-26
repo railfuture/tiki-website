@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: modlib.php 41397 2012-05-09 13:45:32Z jonnybradley $
+// $Id: modlib.php 42429 2012-07-19 16:52:28Z jonnybradley $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -1125,6 +1125,43 @@ class ModLib extends TikiLib
 		}
 
 		return $return;
+	}
+
+	/**
+	 * @global TikiLib $tikilib
+	 * @param bool $added shows current prefs not in defaults
+	 * @return array (prefname => array( 'current' => current value, 'default' => default value ))
+	 */
+	function getModulesForExport()
+	{
+		$export = array();
+		$assigned_modules = $this->get_assigned_modules();
+
+		foreach ( $assigned_modules as $zone => $modules ) {
+			foreach ($modules as $pos => $module) {
+				$modtogo['type'] = 'module';
+				$modtogo['data'] = array();
+
+				$modtogo['data']['name'] = $module['name'];
+				TikiLib::parse_str($module['params'], $modtogo['data']['params']);
+				$modtogo['data']['groups'] = unserialize($module['groups']);
+				$modtogo['data']['order'] = $module['ord'];
+
+				$modtogo['data']['position'] = str_replace('_modules', '', $this->module_zones[$module['position']]);
+
+				if ($this->is_user_module($module['name'])) {
+					$um = $this->get_user_module($module['name']);
+					if (preg_match("/^\!*\{.*\}$/", trim($um['data']), $matches)) {	// start and end with { and } makes yaml parser think it's a serialized value
+						$um['data'] = $um['data'] . "\n";							// so force it to be a literal block
+					}
+					$modtogo['data']['custom'] = $um['data'];		// the yaml dumper copes with linefeeds etc as a literal block
+					$modtogo['data']['parse'] = empty($um['parse']) ? 'n' : $um['parse'];
+				}
+
+				$export[] = $modtogo;
+			}
+		}
+		return $export;
 	}
 
 

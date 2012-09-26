@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-adminusers.php 39994 2012-03-01 21:26:28Z pkdille $
+// $Id: tiki-adminusers.php 42433 2012-07-20 14:25:05Z jonnybradley $
 
 $tikifeedback = array();
 $errors = array();
@@ -361,7 +361,11 @@ if (isset($_REQUEST['batch']) && is_uploaded_file($_FILES['csvlist']['tmp_name']
 			$smarty->display('error.tpl');
 			die;
 		}
-		$access->check_authenticity(tra('Are you sure you want to remove this user from this group?'));
+		if ($_REQUEST['user'] === 'admin' && $_REQUEST['group'] === 'Admins') {
+			$access->check_authenticity(tra('Are you sure you want to remove the admin user from the Admins group? You may not be able to administer your Tiki any more if you do this!'));
+		} else {
+			$access->check_authenticity(tra('Are you sure you want to remove this user from this group?'));
+		}
 		$userlib->remove_user_from_group($_REQUEST['user'], $_REQUEST['group']);
 		$tikifeedback[] = array(
 			'num' => 0,
@@ -697,6 +701,10 @@ if (isset($_REQUEST['user']) and $_REQUEST['user']) {
 				$smarty->assign('usersitemid', $usersitemid);
 			}
 		}
+	}
+
+	if ($prefs['email_due'] > 0) {
+		$userinfo['daysSinceEmailConfirm'] =  floor(($userlib->now - $userinfo['email_confirm']) / (60 * 60 * 24));
 	}
 } else {
 	$userinfo['login'] = '';

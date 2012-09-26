@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: freetaglib.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: freetaglib.php 42403 2012-07-17 19:43:15Z nkoth $
 
 /**
  * FreetagLib is based in Freetag library. Code was translated to Tiki style and
@@ -1222,6 +1222,12 @@ class FreetagLib extends ObjectLib
 			$mid .= ' AND (pb.`lang` = pa.`lang` OR pa.`lang` IS NULL OR pb.`lang` IS NULL) ';
 			$join_tiki_pages = 'INNER JOIN `tiki_pages` pa ON pa.`pageName` = oa.itemId'
 							. ' INNER JOIN `tiki_pages` pb ON pb.`pageName` = ob.`itemId`'
+							;
+		} elseif ($prefs['feature_multilingual'] == 'y' && $type == 'article' && $targetType == 'article') {
+			// make sure only sane lang articles are selected
+			$mid .= ' AND (ab.`lang` = aa.`lang` OR aa.`lang` IS NULL OR ab.`lang` IS NULL) ';
+			$join_tiki_pages = 'INNER JOIN `tiki_articles` aa ON aa.`articleId` = oa.itemId'
+							. ' INNER JOIN `tiki_articles` ab ON ab.`articleId` = ob.`itemId`'
 							;
 		} else {
 			$join_tiki_pages = '';

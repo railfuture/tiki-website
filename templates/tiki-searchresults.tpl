@@ -1,4 +1,4 @@
-{* $Id: tiki-searchresults.tpl 42043 2012-06-22 20:29:52Z eromneg $ *}
+{* $Id: tiki-searchresults.tpl 42707 2012-08-24 08:33:52Z eromneg $ *}
 
 {if !( $searchStyle eq "menu" )}
 	{title admpage="search" help="Search"}{tr}Search{/tr}{/title}
@@ -33,6 +33,8 @@
 				{add_help show='y' title="{tr}Search Help{/tr}" id="advanced_search_help"}
 					{$smarty.capture.advanced_search_help}
 				{/add_help}
+
+				{if $prefs.feature_search_show_last_modification eq 'y'}
 				<label class="searchdate" for="date">
 					{tr}Date Search:{/tr}
 					<select id="date" name="date" onchange="javascript:submit()">
@@ -47,6 +49,8 @@
 						{/section}
 					</select>
 				</label>
+				{/if}
+
 				{if $prefs.feature_multilingual eq 'y' and ($where eq 'wikis' || $where eq 'articles')}
 					<label class="searchLang" for="searchLang">
 						   <select id="searchLang" name="searchLang">
@@ -62,7 +66,7 @@
 					</label>
 				{/if}
 				
-				{if $prefs.feature_categories eq 'y' and !empty($categories) and $tiki_p_view_category eq 'y'}
+				{if $prefs.feature_categories eq 'y' and !empty($categories) and $tiki_p_view_category eq 'y' and $prefs.search_show_category_filter eq 'y'}
 					<div id="category_singleselect_find" style="display: {if $findSelectedCategoriesNumber > 1}none{else}block{/if};">
 						<label class="findcateg"> 
 							<select name="categId">
@@ -186,7 +190,9 @@
 			{if !empty($results[search].parentName)}
 					<a href="{$results[search].parentHref}" class="parentname">{$results[search].parentName|escape}</a>
 				{/if}
-			<a href="{$results[search].href}&amp;highlight={$words|escape:url}" class="objectname">{$results[search].pageName|escape}</a>
+			{page_in_structure pagechecked=$results[search].pageName} {* check if page in structure *}
+			{if $page_in_structure} {page_alias pagechecked=$results[search].pageName} {/if}
+			<a href="{$results[search].href}&amp;highlight={$words|escape:url}" class="objectname">{if $page_in_structure and $page_alias ne ''}{$page_alias}{else}{$results[search].pageName|escape}{/if}</a>
 			{if $prefs.feature_search_show_visit_count eq 'y'}
 				<span class="itemhits">({tr}Hits:{/tr} {$results[search].hits|escape})</span>
 			{/if}

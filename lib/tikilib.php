@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tikilib.php 41708 2012-06-01 18:10:55Z jonnybradley $
+// $Id: tikilib.php 42542 2012-08-06 18:48:41Z lphuberdeau $
 
 // this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -243,6 +243,10 @@ class TikiLib extends TikiDb_Bridge
 		case 'quiz':
 			global $quizlib; require_once 'lib/quizzes/quizlib.php';
 			return self::$libraries[$name] = $quizlib;
+		case 'mime':
+			require_once 'lib/mime/mimelib.php';
+			$mimelib = new MimeLib;
+			return self::$libraries[$name] = $mimelib;
 		}
 	}
 
@@ -2769,7 +2773,8 @@ class TikiLib extends TikiDb_Bridge
 				if (empty($f)) {//look for space...
 					$mid = " where LOWER(`pageName`) like LOWER('%$find%')";
 				} else {
-					$mid = " where LOWER(`pageName`) like ".implode(' or LOWER(`pageName`) like ', array_fill(0, count($f), 'LOWER(?)'));
+					$findop = $forListPages ? ' AND' : ' OR';
+					$mid = " where LOWER(`pageName`) like ".implode($findop . ' LOWER(`pageName`) like ', array_fill(0, count($f), 'LOWER(?)'));
 					$bindvars = $f;
 				}
 			} else {

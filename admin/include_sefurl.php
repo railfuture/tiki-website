@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: include_sefurl.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: include_sefurl.php 42430 2012-07-19 21:40:07Z jonnybradley $
 
 require_once ('tiki-setup.php');
 $access->check_script($_SERVER["SCRIPT_NAME"], basename(__FILE__));
@@ -48,6 +48,19 @@ if (isset($enabledFileName)) {
 				$configurationFile = 'current';
 			} else {
 				$configurationFile = 'outdated';
+			}
+			if ($httpd === 'Apache') {	// work out if RewriteBase is set up properly
+				global $url_path;
+				$rewritebase = '/';
+				while ($nextLine = fgets($enabledFile)) {
+					if (preg_match('/^RewriteBase\s*(.*)$/', $nextLine, $m)) {
+						$rewritebase = substr($m[1], -1) !== '/' ? $m[1] . '/' : $m[1];
+						break;
+					}
+				}
+				if ($url_path != $rewritebase) {
+					$smarty->assign('rewritebaseSetting', $rewritebase);
+				}
 			}
 			fclose($referenceFile);
 		} else {

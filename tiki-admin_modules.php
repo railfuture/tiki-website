@@ -3,7 +3,15 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-admin_modules.php 41399 2012-05-09 16:58:22Z jonnybradley $
+// $Id: tiki-admin_modules.php 42130 2012-06-27 10:03:23Z jonnybradley $
+
+$inputConfiguration = array(
+		array(
+			'staticKeyFilters' => array(
+				'um_data' => 'none',
+			),
+		)
+);
 
 $section = 'admin';
 require_once ('tiki-setup.php');

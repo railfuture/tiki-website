@@ -1,4 +1,4 @@
-/* $Id: snow.css 41353 2012-05-05 04:33:56Z chibaguy $ The Snow theme for Tiki Wiki CMS Groupware is an original
+/* $Id: snow.css 42454 2012-07-23 12:21:09Z chibaguy $ The Snow theme for Tiki Wiki CMS Groupware is an original
 	theme released under the LGPL license by author and maintainer
 	Gary Cunningham-Lee (http://zukakakina.com). Visit zukakakina.com or themes.tiki.org for
 	updates and other information about this theme.
@@ -477,7 +477,7 @@ h3.box-title {
 .rbox-data {background: #e7f2f4}
 
 .rbox-title {
-	margin-bottom: -.4em;
+	margin-bottom: -.45em;
 }
 
 .simplebox {
@@ -736,7 +736,7 @@ padding: 2px;
 	margin: 4px;
 	border: 1px dashed #ADACAF;
 	overflow: auto; 
-   width: 500px}
+}
 
 .codecaption {
 	font-size: 90%;

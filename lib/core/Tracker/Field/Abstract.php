@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: Abstract.php 42037 2012-06-22 18:46:41Z jonnybradley $
+// $Id: Abstract.php 42390 2012-07-16 16:51:39Z lphuberdeau $
 
 abstract class Tracker_Field_Abstract implements Tracker_Field_Interface, Tracker_Field_Indexable
 {
@@ -264,11 +264,13 @@ abstract class Tracker_Field_Abstract implements Tracker_Field_Interface, Tracke
 	protected function getOption($number, $default = false)
 	{
 		if (! is_numeric($number)) {
-			$type = $this->getConfiguration('type');
-			$class = get_class($this);
+			$factory = new Tracker_Field_Factory($this->definition);
+			$types = $factory->getFieldTypes();
 
-			$info = call_user_func(array($class, 'getTypes'));
-			$params = array_keys($info[$type]['params']);
+			$type = $this->getConfiguration('type');
+
+			$info = $types[$type];
+			$params = array_keys($info['params']);
 
 			$number = array_search($number, $params);
 

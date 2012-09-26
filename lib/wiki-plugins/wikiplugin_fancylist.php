@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: wikiplugin_fancylist.php 40035 2012-03-04 21:22:53Z gezzzan $
+// $Id: wikiplugin_fancylist.php 42350 2012-07-11 19:30:38Z changi67 $
 
 function wikiplugin_fancylist_info()
 {
@@ -55,7 +55,7 @@ function wikiplugin_fancylist($data, $params)
 	$lines = preg_split("/\n/", trim($data));
 	foreach ($lines as $line) {
 		// replace all before and including the ")"
-		$part = preg_replace("/[\w]+\)(.*)/", "$1", $line);
+		$part = preg_replace("/^[\w]+\)(.*)/", "$1", $line);
 		if (isset($div)) {
 			$result .= '<div><span class='.count.'>'.$count.'</span><p>' . $part . '</p></div>';
 			$count++;

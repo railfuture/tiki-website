@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: searchlib-unified.php 40616 2012-04-01 21:04:37Z sylvieg $
+// $Id: searchlib-unified.php 42734 2012-08-25 14:42:44Z jonnybradley $
 
 class UnifiedSearchLib
 {
@@ -67,7 +67,19 @@ class UnifiedSearchLib
 	function rebuildInProgress()
 	{
 		$tempName = $this->getIndexLocation() . '-new';
-		return file_exists($tempName);
+		$file_exists = file_exists($tempName);
+
+		if (!isset($_SERVER['REQUEST_METHOD']) && !TikiInit::isWindows()) {		// called from shell.php and unix?
+			$output = null;
+			exec('ps ax | grep \'search/shell.php\'|grep -v grep|grep -v sudo', $output);	// check for another running process
+			if (is_array($output) && count($output) > 1) {
+				return true;
+			} else if ($file_exists) {
+				$this->destroyDirectory($tempName);
+				$file_exists = false;
+			}
+		}
+		return $file_exists;
 	}
 
 	function rebuild($loggit = false)

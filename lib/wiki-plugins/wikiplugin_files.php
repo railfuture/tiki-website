@@ -3,10 +3,11 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: wikiplugin_files.php 40019 2012-03-03 20:39:25Z gezzzan $
+// $Id: wikiplugin_files.php 42757 2012-08-25 19:13:48Z jonnybradley $
 
 function wikiplugin_files_info()
 {
+	global $prefs;
 	return array(
 		'name' => tra('Files'),
 		'documentation' => 'PluginFiles',
@@ -20,7 +21,8 @@ function wikiplugin_files_info()
 			'galleryId' => array(
 				'required' => false,
 				'name' => tra('File Galleries ID'),
-				'description' => tra('To list only files contained in these file galleries (multiple IDs separated by colon)'),
+				'description' => tra('To list only files contained in these file galleries (multiple IDs separated by colon)') .
+									($prefs['feature_use_fgal_for_user_files'] === 'y' ? '.<br> ' . tra('Or enter a username for user files (hint: enter {{user}} for current logged in user).') : ''),
 				'default' => '',
 				'separator' => ':',
 			),
@@ -423,7 +425,12 @@ function wikiplugin_files($data, $params)
 		$sort = 'name_asc';
 	if (isset($galleryId)) {
 		$galId = $galleryId[0];
+		if ($prefs['feature_use_fgal_for_user_files'] === 'y' && !is_numeric($galId)) {	// if not number could be a userfiles gallery
+			$galId = $filegallib->get_user_file_gallery($galId);
+			$galleryId = array($galId);
+		}
 		$gal_info = $filegallib->get_file_gallery($galId);
+
 		if ($tiki_p_admin != 'y' && $tiki_p_admin_files_galleries != 'y' && $gal_info['user'] != $user) {
 			$p_view_file_gallery = $tikilib->user_has_perm_on_object($user, $galId, 'file gallery', 'tiki_p_view_file_gallery') ? 'y' : 'n';
 			if ($p_view_file_gallery != 'y')

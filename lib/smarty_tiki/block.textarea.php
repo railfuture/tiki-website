@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: block.textarea.php 41849 2012-06-07 16:34:49Z jonnybradley $
+// $Id: block.textarea.php 42284 2012-07-09 12:37:37Z robertplummer $
 
 /**
  * Smarty plugin
@@ -174,7 +174,7 @@ function smarty_block_textarea($params, $content, $smarty, $repeat)
 		
 		$html .= '<input type="hidden" name="wysiwyg" value="y" />';
 
-		$html .= '<textarea class="wikiedit" name="'.$params['name'].'" id="'.$as_id.'" data-nocodemirror="y" style="visibility:hidden;';	// missing closing quotes, closed in condition
+		$html .= '<textarea class="wikiedit" name="'.$params['name'].'" id="'.$as_id.'" style="visibility:hidden;';	// missing closing quotes, closed in condition
 
 		if (empty($params['cols'])) {
 			$html .= 'width:100%;'. (empty($params['rows']) ? 'height:500px;' : '') .'"';

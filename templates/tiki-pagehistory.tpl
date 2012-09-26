@@ -1,4 +1,4 @@
-{* $Id: tiki-pagehistory.tpl 40565 2012-03-31 14:32:18Z jonnybradley $ *}
+{* $Id: tiki-pagehistory.tpl 42287 2012-07-09 13:05:05Z robertplummer $ *}
 
 {title admpage="wiki"}{tr}History:{/tr} {$page}{/title}
 
@@ -73,8 +73,8 @@
 			{/if}
 		{/if}
 	</div>
-	<textarea class="wikiedit readonly" style="width:100%;height:400px" readonly="readonly" id="page_source">{$sourced|escape}</textarea>
-	{if $prefs.feature_jquery_ui eq "y"}{jq}$("#page_source").resizable();{/jq}{/if}
+	<textarea data-codemirror="true" data-syntax='tiki' class="wikiedit readonly" style="width:100%;height:400px" readonly="readonly" id="page_source">{$sourced|escape}</textarea>
+	{if $prefs.feature_jquery_ui eq "y" && $prefs.feature_syntax_highlighter neq "y"}{jq}$("#page_source").resizable();{/jq}{/if}
 {/if}
 
 {if $flaggedrev_approval and $tiki_p_wiki_approve eq 'y' and $flaggedrev_compare_approve}

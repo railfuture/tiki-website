@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-download_file.php 41148 2012-04-28 14:47:16Z jonnybradley $
+// $Id: tiki-download_file.php 42578 2012-08-15 16:53:43Z jonnybradley $
 
 $force_no_compression = true;
 $skip = false;
@@ -87,6 +87,12 @@ if (!$skip) {
 			$info_thumb = $filegallib->get_file($_GET['thumbnail']);
 			if ( !$zip && $tiki_p_admin_file_galleries != 'y' && !$userlib->user_has_perm_on_object($user, $info_thumb['galleryId'], 'file gallery', 'tiki_p_download_files') && !($info['backlinkPerms'] == 'y' && !$filegallib->hasOnlyPrivateBacklinks($info_thumb['fileId']))) {
 				if (!$user) $_SESSION['loginfrom'] = $_SERVER['REQUEST_URI'];
+				$access->display_error('', tra('Permission denied'), 401);
+			}
+		}
+		if ($prefs['feature_use_fgal_for_user_files'] === 'y' && $tiki_p_admin_file_galleries !== 'y') {
+			$gal_info = $filegallib->get_file_gallery_info($info['galleryId']);
+			if ($gal_info['type'] === 'user' && $gal_info['visible'] !== 'y' && $gal_info['user'] !== $user ) {
 				$access->display_error('', tra('Permission denied'), 401);
 			}
 		}
@@ -338,9 +344,12 @@ if ( isset($_GET['preview']) || isset($_GET['thumbnail']) || isset($_GET['displa
 	}
 }
 
+$mimelib = TikiLib::lib('mime');
 if ( empty($info['filetype']) || $info['filetype'] == 'application/x-octetstream' || $info['filetype'] == 'application/octet-stream' ) {
-	include_once('lib/mime/mimelib.php');
-	$info['filetype'] = tiki_get_mime($info['filename'], 'application/octet-stream', $filepath);
+	$info['filetype'] = $mimelib->from_path($info['filename'], $filepath);
+
+} else if (isset($_GET['thumbnail']) && strpos($info['filetype'], 'image') === false) {	// use thumb format
+	$info['filetype'] = $mimelib->from_content($info['filename'], $content);
 }
 header('Content-type: '.$info['filetype']);
 

@@ -1,4 +1,4 @@
-{* $Id: tiki.tpl 41200 2012-04-30 00:44:22Z lindonb $ *}<!DOCTYPE html>
+{* $Id: tiki.tpl 42405 2012-07-18 09:37:44Z jonnybradley $ *}<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{if !empty($pageLang)}{$pageLang}{else}{$prefs.language}{/if}" lang="{if !empty($pageLang)}{$pageLang}{else}{$prefs.language}{/if}"{if !empty($page_id)} id="page_{$page_id}"{/if}>
 	<head>
 		{include file='header.tpl'}
@@ -196,3 +196,6 @@
 		{/if}
 	</body>
 </html>
+{if !empty($smarty.request.show_smarty_debug)}
+	{debug}
+{/if}

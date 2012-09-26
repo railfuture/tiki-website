@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: fgal_listing_conf.php 40355 2012-03-24 17:54:25Z jonnybradley $
+// $Id: fgal_listing_conf.php 42493 2012-07-29 16:03:04Z jonnybradley $
 
 //this script may only be included - so its better to err & die if called directly.
 //smarty is not there - we need setup
@@ -90,14 +90,15 @@ if (isset($_REQUEST['view']) && $_REQUEST['view'] == 'admin') {
 	foreach ( $fgal_options as $k_gal => $v ) {
 		$k_prefs = 'fgal_'.$k_gal;
 
-		if ( $k_gal == 'default_view' ) {
-			$fgal_options[$k_gal]['value'] = ( isset($gal_info) && isset($gal_info[$k_gal]) ) ? $gal_info[$k_gal] : $prefs[$k_prefs];
-		} elseif ( !isset($_REQUEST['edit_mode']) ) {
+		if ( isset($_REQUEST['page']) && $_REQUEST['page'] === 'fgal' ) {
 			// We are in the file gallery admin panel
 			$fgal_options[$k_gal]['value'] = $prefs[$k_prefs];
-		} else {
+		} elseif ( isset($_REQUEST['edit_mode']) ) {
 			// We are in the edit file gallery page
 			$fgal_options[$k_gal]['value'] = $gal_info[$k_gal];
+		} else {
+			// normal gallery view
+			$fgal_options[$k_gal]['value'] = ( isset($gal_info) && isset($gal_info[$k_gal]) ) ? $gal_info[$k_gal] : $prefs[$k_prefs];
 		}
 	}
 }

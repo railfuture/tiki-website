@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: cas.php 39469 2012-01-12 21:13:48Z changi67 $
+// $Id: cas.php 42241 2012-07-05 21:29:18Z marclaporte $
 
 function prefs_cas_list()
 {
@@ -65,7 +65,7 @@ function prefs_cas_list()
 			'size' => 5,
 			'filter' => 'digits',
 			'perspective' => false,
-			'default' => '',
+			'default' => '443',
 			),
 		'cas_path' => array(
 			'name' => tra('Path'),

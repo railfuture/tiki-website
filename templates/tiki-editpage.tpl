@@ -1,4 +1,4 @@
-{* $Id: tiki-editpage.tpl 39748 2012-02-05 16:29:48Z jonnybradley $ *}
+{* $Id: tiki-editpage.tpl 42351 2012-07-11 20:27:06Z changi67 $ *}
 {if $page|lower neq 'sandbox' and $prefs.feature_contribution eq 'y' and $prefs.feature_contribution_mandatory eq 'y'}
 	{remarksbox type='tip' title="{tr}Tip{/tr}"}
 		<strong class='mandatory_note'>{tr}Fields marked with a * are mandatory.{/tr}</strong>
@@ -158,7 +158,9 @@
 							{tr _0=$page_badchars_display|escape}The page name specified contains characters that may render the page hard to access. You may want to consider removing those: <strong>%0</strong>{/tr}
 						{/remarksbox}
 					{/if}
-					<p>{tr}Page name:{/tr} <input type="text" name="page" value="{$page|escape}" /></p>
+						<p>{tr}Page name:{/tr} <input type="text" name="page" value="{$page|escape}" />
+							<input type="submit" name="rename" value="{tr}Rename{/tr}" />
+						</p>
 				{else}
 					<input type="hidden" name="page" value="{$page|escape}" /> 
 					{* the above hidden field is needed for auto-save to work *}

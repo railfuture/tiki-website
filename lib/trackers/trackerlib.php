@@ -3,7 +3,7 @@
 //
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: trackerlib.php 42088 2012-06-25 21:14:40Z robertplummer $
+// $Id: trackerlib.php 42569 2012-08-12 12:49:05Z lphuberdeau $
 
 /**
  * Tracker Library
@@ -4285,7 +4285,7 @@ class TrackerLib extends TikiLib
 
 		$fields = $this->table('tiki_tracker_fields');
 		$list = $fields->fetchAll($fields->all(), array(
-			'type' => 'r',
+			'type' => $fields->exactly('r'),
 		));
 
 		$toConsider = array();

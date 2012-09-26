@@ -1,4 +1,4 @@
-{* $Id: mod-login_box.tpl 41476 2012-05-16 15:38:25Z xavidp $ *}
+{* $Id: mod-login_box.tpl 42473 2012-07-25 18:44:57Z robertplummer $ *}
 {jq notonready=true}
 function capLock(e, el){
 	kc = e.keyCode ? e.keyCode : e.which;
@@ -40,7 +40,9 @@ $("#loginbox-{{$module_logo_instance}}").submit( function () {
 {/jq}
 {if !isset($tpl_module_title)}{assign var=tpl_module_title value="{tr}Log in{/tr}"}{/if}{* Left for performance, since tiki-login_scr.php includes this template directly. *}
 {if !isset($module_params)}{assign var=module_params value=' '}{/if}
-{tikimodule error=$module_params.error title=$tpl_module_title name="login_box" flip=$module_params.flip decorations=$module_params.decorations nobox=$module_params.nobox notitle=$module_params.notitle}
+{if isset($nobox)}{$module_params.nobox = $nobox}{/if}
+{if isset($style)}{$module_params.style = $style}{/if}
+{tikimodule error=$module_params.error title=$tpl_module_title name="login_box" flip=$module_params.flip decorations=$module_params.decorations nobox=$module_params.nobox notitle=$module_params.notitle style=$module_params.style}
 	{if $mode eq "header"}<div class="siteloginbar{if $user} logged-in{/if}">{/if}
 	{if $user}
 		{if empty($mode) or $mode eq "module"}

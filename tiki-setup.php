@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-setup.php 41794 2012-06-05 17:22:54Z jonnybradley $
+// $Id: tiki-setup.php 42575 2012-08-15 13:14:38Z jonnybradley $
 
 //this script may only be included - so its better to die if called directly.
 global $prefs, $tikilib;
@@ -115,7 +115,7 @@ require_once ('lib/setup/theme.php');
 if ($prefs['feature_babelfish'] == 'y' || $prefs['feature_babelfish_logo'] == 'y') require_once ('lib/setup/babelfish.php');
 if (!empty($varcheck_errors)) {
 	$smarty->assign('msg', $varcheck_errors);
-	$smarty->display('error.tpl');
+	$smarty->display('error_raw.tpl');
 	die;
 }
 if ($prefs['feature_challenge'] == 'y') {

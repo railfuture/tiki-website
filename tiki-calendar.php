@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-calendar.php 41427 2012-05-11 11:08:15Z jonnybradley $
+// $Id: tiki-calendar.php 42203 2012-07-03 19:02:27Z jonnybradley $
 
 $section = 'calendar';
 require_once ('tiki-setup.php');
@@ -801,6 +801,10 @@ if (!empty($prefs['calendar_fullcalendar']) && $prefs['calendar_fullcalendar'] =
 	$headerlib->add_jsfile('lib/fullcalendar/fullcalendar.min.js');
 	$smarty->assign('minHourOfDay', $minHourOfDay);
 	$smarty->assign('maxHourOfDay', $maxHourOfDay);
+	if ($prefs['feature_wysiwyg'] == 'y' && $prefs['wysiwyg_default'] == 'y') {
+		include_once('lib/ckeditor_tiki/wysiwyglib.php');
+		$wysiwyglib->setUpEditor(false, 'editwiki');		// init ckeditor if default editor
+	}
 }
 
 $smarty->assign('uses_tabs', 'y');

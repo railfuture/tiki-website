@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-admingroups.php 41675 2012-05-31 19:02:19Z changi67 $
+// $Id: tiki-admingroups.php 42505 2012-08-01 10:02:13Z jonnybradley $
 
 require_once ('tiki-setup.php');
 
@@ -145,6 +145,7 @@ if (isset($_REQUEST["save"]) and isset($_REQUEST["olgroup"]) and !empty($_REQUES
 	}
 	$_REQUEST["group"] = $_REQUEST["name"];
 	$logslib->add_log('admingroups', 'modified group ' . $_REQUEST["olgroup"] . ' to ' . $_REQUEST["group"]);
+	$cookietab = 1;
 }
 // Process a form to remove a group
 if (isset($_REQUEST["action"])) {
@@ -277,7 +278,7 @@ if (!empty($_REQUEST["group"])) {
 	} else {
 		 $re['isWatching'] = false;
 	}
-	if ($cookietab == '1') $cookietab = "2";
+	if ($cookietab == '1' && !isset($_REQUEST["save"])) $cookietab = "2";
 } else {
 	$allgroups = $userlib->list_all_groups();
 	foreach ($allgroups as $rr) {
