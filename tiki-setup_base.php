@@ -3,7 +3,7 @@
 // 
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: tiki-setup_base.php 41829 2012-06-07 10:05:40Z changi67 $
+// $Id: tiki-setup_base.php 42568 2012-08-10 17:39:40Z luciash $
 
 //this script may only be included - so its better to die if called directly.
 if (strpos($_SERVER["SCRIPT_NAME"], basename(__FILE__)) !== false) {
@@ -61,6 +61,7 @@ $needed_prefs = array(
 	'min_pass_length' => 5,
 	'pass_chr_special' => 'n',
 	'smarty_compilation' => 'modified',
+	'menus_item_names_raw' => 'n',
 );
 // check that tiki_preferences is there
 if ($tikilib->query("SHOW TABLES LIKE 'tiki_preferences'")->numRows() == 0) {
@@ -181,8 +182,12 @@ $patterns['stringlist'] = "/^[^<>\"#]*$/"; // to, cc, bcc (for string lists like
 $patterns['vars'] = "/^[-_a-zA-Z0-9]*$/"; // for variable keys
 $patterns['dotvars'] = "/^[-_a-zA-Z0-9\.]*$/"; // same pattern as a variable key, but that may contain a dot
 $patterns['hash'] = "/^[a-z0-9]*$/"; // for hash reqId in live support
-// needed for the htmlpage inclusion in tiki-editpage
-$patterns['url'] = "/^(https?:\/\/)?[^<>\"]*$/"; // needed for the htmlpage inclusion in tiki-editpage
+// allow quotes in url for additional tag attributes if html allowed in menu options links
+if ($prefs['menus_item_names_raw'] == 'y' and strpos($_SERVER["SCRIPT_NAME"], 'tiki-admin_menu_options.php') !== false) {
+$patterns['url'] = "/^(https?:\/\/)?[^<>]*$/"; 
+} else {
+$patterns['url'] = "/^(https?:\/\/)?[^<>\"]*$/"; 
+}
 // parameter type definitions. prepend a + if variable may not be empty, e.g. '+int'
 $vartype['id'] = '+int';
 $vartype['forumId'] = '+int';
@@ -424,11 +429,15 @@ if (isset($_SESSION["$user_cookie_site"])) {
 
 	if ( isset($prefs['login_http_basic']) && $prefs['login_http_basic'] === 'always' ||
 		(isset($prefs['login_http_basic']) && $prefs['login_http_basic'] === 'ssl' && isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
-
 		// Authenticate if the credentials are present, do nothing otherwise
+		if(isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION']))
+			$_SERVER['HTTP_AUTHORIZATION'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+		if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+			$ha = base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6));
+			list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':', $ha);
+		}
 		if (isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
 			$validate = $userlib->validate_user($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
-
 			if ($validate[0]) {
 				$user = $validate[1];
 				$userlib->confirm_user($user);
@@ -524,25 +533,22 @@ if ( ( isset($prefs['tiki_allow_trust_input']) && $prefs['tiki_allow_trust_input
 	unset($tmp);
 }
 
-if ( isset($prefs['tiki_check_file_content']) && $prefs['tiki_check_file_content'] == 'y' && count($_FILES)) {
-	$php53 = defined('FILEINFO_MIME_TYPE');
-	if ($finfo = new finfo($php53 ? FILEINFO_MIME_TYPE : FILEINFO_MIME)) {
-		foreach ($_FILES as $key => & $upload_file_info) {
-			if (is_array($upload_file_info['tmp_name'])) {
-				foreach ($upload_file_info['tmp_name'] as $k => $tmp_name) {
-					if ($tmp_name) {
-						$type = $finfo->file($tmp_name);
-						$upload_file_info['type'][$k] = $php53 ? $type : reset(explode(';', $type));
-					}
+if (count($_FILES)) {
+	$mimelib = TikiLib::lib('mime');
+
+	foreach ($_FILES as $key => & $upload_file_info) {
+		if (is_array($upload_file_info['tmp_name'])) {
+			foreach ($upload_file_info['tmp_name'] as $k => $tmp_name) {
+				if ($tmp_name) {
+					$type = $mimelib->from_path($upload_file_info['name'][$k], $tmp_name);
+					$upload_file_info['type'][$k] = $type;
 				}
-			} elseif ($upload_file_info['tmp_name']) {
-				$type = $finfo->file($upload_file_info['tmp_name']);
-				$upload_file_info['type'] = $php53 ? $type : reset(explode(';', $type));
 			}
+		} elseif ($upload_file_info['tmp_name']) {
+			$type = $mimelib->from_path($upload_file_info['name'], $upload_file_info['tmp_name']);
+			$upload_file_info['type'] = $type;
 		}
 	}
-
-	unset($finfo);
 }
 
 // deal with old request globals (e.g. used by Smarty)
